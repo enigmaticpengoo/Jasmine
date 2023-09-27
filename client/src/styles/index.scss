@@ -1,0 +1,286 @@
+@import './variables';
+
+// General
+
+* {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serifs;
+    margin: 0px;
+    background-color: $main-background;
+    color: $main-color;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.no-decoration {
+    text-decoration: none;
+    color: $main-color;
+}
+
+.button {
+    height: 30px;
+    width: 50px;
+    color: white;
+    background-color: rgb(86, 86, 252);
+    border: none;
+    border-radius: 5px;
+    margin: 5px 0px;
+    &:hover {
+        cursor: pointer;
+        background-color: rgb(103, 103, 253);
+    }
+    &:hover:active {
+        background-color: rgb(65, 65, 233);
+    }
+}
+
+.input-border {
+    border: 1px solid lightgray;
+    &:focus {
+        outline: none;
+        border: 2px solid rgb(110, 110, 110);
+        border-radius: 2px;
+    }
+}
+
+.nested-link-parent,
+  .nested-link-child {
+    position: absolute;
+    text-decoration: none;
+  }
+  
+.nested-link-parent {  
+z-index: 0;
+padding-top: 40px;
+top: 0;
+left: 0;
+right: 0;
+bottom: 0;
+}
+
+.nested-link-child {
+z-index: 1;
+top: 0;
+
+}
+
+.active-decoration {
+    &:active {
+        text-decoration: underline;
+    }
+}
+
+// Post
+.post-box {
+    display: flex;
+    flex-direction: column;
+    height: 200px;
+    width: 500px;
+    border-bottom: 1px solid lightgray;
+    padding: 5px;
+}
+
+.post-profile {
+    display: flex;
+    margin: 5px;
+}
+
+.post-profile-pic {
+    width: 30px;
+    border-radius: 50%;
+    &:hover {
+        filter: grayscale(35%)
+    }
+}
+
+.post-profile-name {
+    padding-left: 10px;
+    font-size: 20px;
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
+.post-button-position {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 5px;
+}
+
+.post-button {
+    height: 32px;
+    width: 54px;
+    font-size: 14px;
+}
+
+.post-textarea {
+    height: 100px;
+    font-size: 18px;
+    resize: none;
+    padding: 5px 10px;
+    border: 1px solid lightgray;
+    &:focus {
+        outline: none;
+        border: 2px solid rgb(110, 110, 110);
+        border-radius: 2px;
+    }
+}
+
+// Feed
+.feed-box {
+    position: relative;
+    width: 500px;
+    height: 100px;
+    border-bottom: 1px solid lightgray;
+    padding: 5px;
+}
+
+.feed-profile {
+    display: flex;
+    margin: 5px;
+}
+
+.feed-profile-pic {
+    width: 30px;
+    border-radius: 50%;
+}
+
+.feed-profile-name {
+    padding-left: 10px;
+    font-size: 20px;
+}
+
+.content-box {
+    font-size: 18px;
+    resize: none;
+    padding: 5px;
+}
+
+// Home
+.home-box-container {
+    display: flex;
+    justify-content: center;
+}
+
+.twitter-home {
+    width: 50px;
+    float: right;
+}
+
+// Searchbar
+.searchbar {
+    width: 500px;
+    padding: 5px 10px;
+    font-size: 16px;
+    border: 1px solid lightgray;
+    &:focus {
+        outline: none;
+        border: 2px solid rgb(110, 110, 110);
+        border-radius: 1px;
+    }
+}
+
+// Aside
+.left-aside {
+    width: $aside-width;
+}
+
+.right-aside {
+    display: flex;
+    width: $aside-width;
+}
+
+// Main
+.main {
+    width: 50%;
+}
+
+// Profile Page
+.profile-box {
+    width: 50%;
+}
+
+.cover-photo {
+    display: block;
+    height: 250px; 
+    width: 500px;
+    background-color: rgb(143, 142, 142);
+}
+
+.pictures {
+    position: relative;
+}
+
+.profile-pic {
+    position: absolute;
+    bottom: 0;
+    padding: 1px;
+    margin: 1px;
+    width: 100px;
+    border-radius: 50%;
+    border: 2px solid white;
+}
+
+.profile-name {
+    font-size: 24px;
+    margin-top: 5px;
+}
+
+.follow-box {
+    display: flex;
+    margin: 5px 0px;
+    align-items: center;
+}
+
+.follow-box-item {
+    margin-right: 10px;
+}
+
+.follow-button {
+    height: 24px;
+    width: 60px;
+}
+
+.profile-post-box {
+    display: flex;
+    flex-direction: column;
+    height: 150px;
+    width: 500px;
+    border-bottom: 1px solid lightgray;
+    padding: 5px;
+}
+
+// Login and Signup
+.form-item {
+    padding: 5px 0px;
+    font-size: 20px;
+}
+
+.form-item-small {
+    padding: 5px 0px;
+    font-size: 15px;
+}
+
+.form-input {
+    width: 200px;
+    height: 26px;
+    font-size: 15px;
+    padding-left: 5px;
+}
+
+.form-box {
+    height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.form-button {
+    height: 30px;
+    width: 54px;
+    font-size: 14px;
+}
