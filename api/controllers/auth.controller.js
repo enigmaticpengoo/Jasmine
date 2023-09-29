@@ -1,4 +1,7 @@
 const User = require('../models/user')
+const RefreshToken = require('../models/refreshTokens')
+const cookie = require('cookie')
+const cors = require('cors')
 const express = require('express')
 const app = express()
 require('dotenv')
@@ -6,11 +9,12 @@ require('dotenv')
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
 
+app.use(cors())
 app.use(express.json())
 
 const signup = (req, res) => {
   const user = new User({
-    username: req.body.username,
+    user: req.body.user,
     email: req.body.email,
     password: bcrypt.hashSync(req.body.password)
   });
@@ -22,7 +26,7 @@ const signup = (req, res) => {
 
 const login = (req, res) => {
   User.findOne({
-    username: req.body.username
+    email: req.body.email
   })
     .then((user) => {
       const passwordIsValid = bcrypt.compareSync(
@@ -37,29 +41,49 @@ const login = (req, res) => {
         });
       }
 
-      const username = { name: req.body.username }
+      const email = { name: req.body.email }
 
-      const accessToken = generateAccessToken(username)
-      const refreshToken = jwt.sign(username, process.env.REFRESH_TOKEN_SECRET)
-      refreshTokens.push(refreshToken)
-      res.json({ accessToken: accessToken, refreshToken: refreshToken })
+      const accessToken = jwt.sign(email, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '5m' })
+      const refreshToken = jwt.sign(email, process.env.REFRESH_TOKEN_SECRET)
+
+      const uploadRefreshToken = new RefreshToken({
+        value: refreshToken,
+        email: req.body.email
+      })
+      uploadRefreshToken.save()
+
+      res.send({ accessToken: accessToken })
     });
 };
 
-function generateAccessToken(user) {
-  return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '5m' });
+async function checkRefreshToken() {
+  const refresh = await RefreshToken.findOne({ email: 'falbokev@gmail.com' }, 'value')
+
+  jwt.verify(refresh['value'], process.env.REFRESH_TOKEN_SECRET, (err, user) => {
+      if (err) {
+        return console.log("refresh token error")
+      } else {
+        return
+      }
+    })
 }
 
-function authenticateToken(req, res, next) {
+async function authenticateToken(req, res, next) {
   const authHeader = req.headers['authorization']
-  console.log(authHeader)
   const token = authHeader && authHeader.split(' ')[1]
-  if (token == null) return res.sendStatus(401)
-
+    
   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
-    if (err) return res.sendStatus(403)
-    req.user = user
+    if (err) {
+      console.log('accessToken invalid, checking refresh token')
+      checkRefreshToken()
+      console.log('setting access token')
+      const accessToken = jwt.sign({ name: 'falbokev@gmail.com' }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '5m' })
+      console.log('new access token: ' + accessToken)
+      res.send({ accessToken: accessToken })
+      next()
+    } else {
     next()
+    }
   })
 }
 

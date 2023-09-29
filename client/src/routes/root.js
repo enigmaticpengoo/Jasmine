@@ -13,12 +13,12 @@ const Root = () => {
       </div>
       <div className="right-aside">
         <div style={{ marginTop: "12px" }}>
-          <Link to="/login" className="no-decoration active-decoration">
+          <Link to="/login" className="login-signup-buttons">
             Login
           </Link>
         </div>
         <div style={{ marginTop: "12px", marginLeft: "10px" }}>
-          <Link to="/signup" className="no-decoration active-decoration">
+          <Link to="/signup" className="login-signup-buttons">
             Signup
           </Link>
         </div>

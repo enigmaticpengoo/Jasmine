@@ -1,28 +1,15 @@
 import { Form, Link, redirect } from "react-router-dom";
 
-const Login = () => {
-//   async function checkCredentials() {
-//     const credentials = await fetch('http://127.0.0.1:3001/api/auth/login')
-//     console.log('got credentials')
-    
-//     const password = document.getElementById('password').value
-
-//     if (credentials.password === password) {
-//       console.log('You have been logged in!')
-//     } else {
-//       console.log('Invalid credentials.')
-//     }
-//   }
-  
+const Login = () => {  
   return (
     <div className="container form-box ">
       <Form method='post' action='/login'>
         <div className="form-item">
-          <div>Username</div>
+          <div>Email</div>
           <input
             className="form-input input-border"
-            placeholder="Username"
-            name='username'
+            placeholder="Email"
+            name='email'
           ></input>
         </div>
         <div className="form-item">
@@ -50,21 +37,24 @@ export const loginAction = async ({ request }) => {
   const data = await request.formData()
 
   const submission = {
-    username: data.get('username'),
+    email: data.get('email'),
     password: data.get('password')
   }
 
   async function checkUser(data) {
-    await fetch('http://127.0.0.1:3001/api/auth/login', {
+    const response = await fetch('http://127.0.0.1:3001/auth/login', {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
       body: JSON.stringify(data)
-    }).then(res => res.json())
+    })
+    const res = await response.json()
+    console.log('Got access token: ' + res.accessToken)
+    document.cookie = 'accessToken=' + res.accessToken
   }
 
-  checkUser(submission)
+   checkUser(submission)
 
   return redirect('/');
 }

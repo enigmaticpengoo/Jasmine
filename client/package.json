@@ -14,11 +14,11 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "start node ../api/server.js & start react-scripts",
+    "start": "start node ../api/server.js & react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "dev": "start nodemon ../api/server.js & start react-scripts"
+    "dev": "start nodemon ../api/server.js & react-scripts start"
   },
   "eslintConfig": {
     "extends": [

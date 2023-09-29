@@ -10,12 +10,16 @@ const Signup = () => {
       <Form method='post' action='/signup'>
         {data && data.error && <p>{data.error}</p>}
         <div className="form-item">
-          <div>Email</div>
-          <input className="form-input input-border" name="email"></input>
+        <div>First Name</div>
+          <input className="form-input input-border" name="firstName"></input>
         </div>
         <div className="form-item">
-          <div>Username</div>
-          <input className="form-input input-border" name="username"></input>
+        <div>Last Name</div>
+          <input className="form-input input-border" name="lastName"></input>
+        </div>
+        <div className="form-item">
+          <div>Email</div>
+          <input className="form-input input-border" name="email"></input>
         </div>
         <div className="form-item">
           <div>Password</div>
@@ -38,13 +42,13 @@ export const signupAction = async ({ request }) => {
   const data = await request.formData()
 
   const submission = {
+    user: data.get('firstName') + ' ' + data.get('lastName'),
     email: data.get('email'),
-    username: data.get('username'),
     password: data.get('password')
   }
 
   async function addUser(data) {
-    await fetch(BASE_API + '/api/auth/signup', {
+    await fetch(BASE_API + '/auth/signup', {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -61,32 +65,3 @@ export const signupAction = async ({ request }) => {
     return redirect('/login');
   } return {error: '*passwords do not match*'}
 }
-
-// ORIGINAL
-// export const signupAction = async ({ request }) => {
-//   const data = await request.formData()
-
-//   const submission = {
-//     email: data.get('email'),
-//     username: data.get('username'),
-//     password: data.get('password')
-//   }
-
-//   async function addUser(data) {
-//     await fetch(BASE_API + '/user/signup', {
-//       method: "POST",
-//       headers: {
-//         "Content-Type": "application/json"
-//       },
-//       body: JSON.stringify(data)
-//     }).then(res => res.json())
-//   }
-
-//   if (data.get('password') === data.get('retypePassword')) {
-//     console.log(submission)
-
-//     addUser(submission)
-
-//     return redirect('/login');
-//   } return {error: '*passwords do not match*'}
-// }

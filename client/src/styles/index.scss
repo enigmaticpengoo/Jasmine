@@ -194,6 +194,16 @@ top: 0;
     width: $aside-width;
 }
 
+.login-signup-buttons {
+    text-decoration: none;
+    &:hover {
+        color:rgb(0, 0, 0)
+    }
+    &:active {
+        text-decoration: underline;
+    }
+}
+
 // Main
 .main {
     width: 50%;

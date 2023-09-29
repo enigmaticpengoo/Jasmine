@@ -2,24 +2,16 @@ const User = require('../models/user')
 
 const verifySignup = async (req, res, next) => {
     await User.findOne({
-      username: req.body.username
+      email: req.body.email
     }).then(async(user) => {  
       if (user) {
-        console.log('username already in use')
-        res.status(400).send({ message: "Failed! Username is already in use!" });
+        console.log('email already in use')
+        res.status(400).send({ message: "Failed! Email is already in use!" });
         return;
       }
-
-      await User.findOne({
-        email: req.body.email
-      }).then((user) => { 
-        if (user) {
-          console.log('email already in use')
-          res.status(400).send({ message: "Failed! Email is already in use!" });
-          return;
-        }
+      
+      next()
       });
-    }).then(() => next())
   };
 
   module.exports = { verifySignup }

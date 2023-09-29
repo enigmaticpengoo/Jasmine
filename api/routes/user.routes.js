@@ -38,7 +38,9 @@ app.put('/user/:id', (req, res) => {
     res.send('Edit User' + req.params.id)
 })
 
-app.delete('/user/:id', (req, res) => {
-    res.send('Delete User' + req.params.id)
+app.delete('/user/delete/:email', async (req, res) => {
+    const user = await User.deleteOne({ email: req.params.email })
+
+    res.json(user)
 })
 }

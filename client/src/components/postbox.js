@@ -8,15 +8,22 @@ const Postbox = () => {
 
   async function makePost() {
     if (postContent !== "") {
+    let decodedCookie = decodeURIComponent(document.cookie).split('=')[1]
     const data = await fetch(BASE_API + '/posts', {
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        "Authorization": 'Bearer' + ' ' + decodedCookie
       },
       body: JSON.stringify({
         content: postContent
       })
-    }).then(res => res.json())
+    })
+
+    if (data.bodyUsed) {
+      console.log('body was used')
+      document.cookie = 'accessToken=' + data.accessToken
+    }
   
     // setPostboxLarge(false)
     setPostContent('')

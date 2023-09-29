@@ -1,7 +1,6 @@
 const { verifySignup } = require("../middleware/verifySignup");
 const { login, signup } = require("../controllers/auth.controller");
-
-let refreshTokens = []
+const RefreshToken = require("../models/refreshTokens");
 
 module.exports = function(app) {
   app.use(function(req, res, next) {
@@ -9,9 +8,9 @@ module.exports = function(app) {
     next();
   });
 
-  app.post("/api/auth/signup", verifySignup, signup);
+  app.post("/auth/signup", verifySignup, signup);
 
-  app.post("/api/auth/login", login);
+  app.post("/auth/login", login);
 
   app.post('/token', (req, res) => {
     const refreshToken = req.body.token
@@ -23,4 +22,16 @@ module.exports = function(app) {
       res.json({accessToken: accessToken})
     })
   })
+
+  app.delete('/logout', (req, res) => {
+    RefreshToken.deleteOne({ email: 'falbokev@gmail.com'})
+    res.sendStatus(204)
+  })
+
+  app.get('/getrequest', async (req, res) => {
+    const refresh = await RefreshToken.findOne({ email: 'falbokev@gmail.com' }, 'value')
+    
+    res.send(refresh["value"])
+  })
 };
+
