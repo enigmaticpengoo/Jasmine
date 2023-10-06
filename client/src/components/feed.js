@@ -26,11 +26,11 @@ const Feed = () => {
   }
 
   return (
-    <>
+    <div className="feed">
       {posts.map(post => (
-        <div className="container" key={post._id}>
+        <div className="feed-container" key={post._id}>
             <div className="feed-box">
-              <div className="post-profile nested-link-child">
+              <div className="post-profile">
                     <Link to="/profile" className="no-decoration">
                       <img className="post-profile-pic" alt="profile" src={ post.profilepic }></img>
                     </Link>
@@ -38,7 +38,7 @@ const Feed = () => {
                       <div className="post-profile-name">{ post.user }</div>
                     </Link>
               </div>
-              <Link to={'/post/' + post._id} className="no-decoration nested-link-parent">
+              <Link to={'/post/' + post._id} className="no-decoration">
                 <div className="content-box">
                   { post.content }
                 </div>
@@ -47,7 +47,7 @@ const Feed = () => {
           
         </div>
       ))}
-    </>
+    </div>
   );
 };
 

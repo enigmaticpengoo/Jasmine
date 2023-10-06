@@ -13,7 +13,6 @@
     display: flex;
     justify-content: center;
     width: 100%;
-    margin-top: 10px;
 }
 
 .no-decoration {
@@ -76,12 +75,28 @@ top: 0;
 
 // Post
 .post-box {
-    display: flex;
-    flex-direction: column;
-    height: 200px;
-    width: 500px;
-    border-bottom: 1px solid lightgray;
+    position: relative;
+    height: auto;
+    width: 550px;
+    border: 1px solid lightgray;
     padding: 5px;
+    border-radius: 20px;
+    margin: 20px 0px;
+    padding-bottom: 50px;
+    max-height: 160px;
+}
+
+.post-textarea {
+    max-height: 150px;
+    width: 525px;
+    font-size: 18px;
+    resize: none;
+    padding: 5px 10px;
+    border: none;
+    &:focus {
+        outline: none;
+        border: none;
+    }
 }
 
 .post-profile {
@@ -106,9 +121,9 @@ top: 0;
 }
 
 .post-button-position {
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 5px;
+    position: absolute;
+    bottom: 5px;
+    right: 10px;
 }
 
 .post-button {
@@ -117,26 +132,17 @@ top: 0;
     font-size: 14px;
 }
 
-.post-textarea {
-    height: 100px;
-    font-size: 18px;
-    resize: none;
-    padding: 5px 10px;
-    border: 1px solid lightgray;
-    &:focus {
-        outline: none;
-        border: 2px solid rgb(110, 110, 110);
-        border-radius: 2px;
-    }
+// Feed
+.feed-container {
+    display:flex;
+    justify-content: center;
 }
 
-// Feed
 .feed-box {
-    position: relative;
-    width: 500px;
-    height: 100px;
+    width: 550px;
     border-bottom: 1px solid lightgray;
     padding: 5px;
+    margin-bottom: 20px;
 }
 
 .feed-profile {
@@ -158,40 +164,73 @@ top: 0;
     font-size: 18px;
     resize: none;
     padding: 5px;
+    white-space: pre-wrap;
 }
 
 // Home
 .home-box-container {
     display: flex;
+    flex-direction: column;
     justify-content: center;
 }
 
-.twitter-home {
-    width: 50px;
-    float: right;
+.home-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 }
 
-// Searchbar
+// Navbar
+.navbar {
+    position: relative;
+    height: 64px;
+    width: 100%;
+    border-bottom: 1px solid lightgray;
+}
+
 .searchbar {
-    width: 500px;
-    padding: 5px 10px;
+    width: 200px;
+    height: 26px;
+    padding: 6px 12px;
     font-size: 16px;
     border: 1px solid lightgray;
+    border-radius: 20px;
     &:focus {
         outline: none;
-        border: 2px solid rgb(110, 110, 110);
-        border-radius: 1px;
+        border: 1px solid lightgray;
+        border-radius: 20px;
     }
 }
 
-// Aside
-.left-aside {
-    width: $aside-width;
+.searchbar-box {
+    padding-left: 10px;
 }
 
-.right-aside {
+.logo {
+    width: 45px;
+}
+
+.logo-searchbar-box {
+    position: absolute;
+    left: 0;
     display: flex;
-    width: $aside-width;
+    align-items: center;
+    padding-left: 10px;
+    padding-top: 8px
+}
+
+.login-signup-box {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    right: 0;
+    padding-right: 110px;
+    padding-top: 20px;
+}
+
+.signup {
+    margin-left: 20px
 }
 
 .login-signup-buttons {

@@ -18,7 +18,7 @@ const Post = () => {
 
     return (
         <>
-            <div className="container" key={post._id}>
+            <div className="container" style={{marginTop: "50px"}} key={post._id}>
                 <div className="feed-box">
                     <div className="post-profile">
                         <Link to="/profile" className="no-decoration">

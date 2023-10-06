@@ -5,11 +5,8 @@ import Searchbar from "../components/searchbar.js";
 const Home = () => { 
   return (
     <div className="home-box-container">
-      <div>
-        <Searchbar />
         <Postbox />
         <Feed />
-      </div>
     </div>
   );
 };

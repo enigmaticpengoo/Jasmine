@@ -14,12 +14,6 @@ app.get('/users', (req, res) => {
     res.json('Users')
 })
 
-app.get('/user/login', async (req, res) => {
-    credentials = await User.findOne({ username: 'asdf' }).select({ username: 1, password: 1})
-    console.log(credentials)
-    res.json(credentials)
-})
-
 app.post('/user/signup', (req, res) => {
     console.log(req.body)
     
@@ -32,10 +26,6 @@ app.post('/user/signup', (req, res) => {
     user.save()
     
     res.json(user)
-})
-
-app.put('/user/:id', (req, res) => {
-    res.send('Edit User' + req.params.id)
 })
 
 app.delete('/user/delete/:email', async (req, res) => {

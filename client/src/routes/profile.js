@@ -1,5 +1,5 @@
+import Postbox from "../components/postbox.js";
 import Profilefeed from "../components/profilefeed.js";
-import Profilepostbox from "../components/profilepostbox.js";
 
 const Profile = () => {
   return (
@@ -19,7 +19,7 @@ const Profile = () => {
             </button>
           </div>
         </div>
-        <Profilepostbox />
+        <Postbox />
         <Profilefeed />
       </div>
     </div>

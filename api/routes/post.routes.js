@@ -28,6 +28,7 @@ app.get('/post/:id', async (req, res) => {
 })
 
 app.post('/posts', authenticateToken, (req, res) => {       
+    console.log(req.body.content)
     const post = new Post({
         content: req.body.content
     })

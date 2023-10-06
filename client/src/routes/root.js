@@ -1,29 +1,44 @@
 import { Link, Outlet } from "react-router-dom";
+import React, { useContext } from 'react';
+import Searchbar from "../components/searchbar";
+
+const LoggedInContext = React.createContext()
 
 const Root = () => {
+  const loggedIn = useContext(LoggedInContext)
+
   return (
-    <div className="container">
-      <div className="left-aside">
-        <Link to="/">
-          <img src="http://localhost:3000/twitter.png" alt="home" className="twitter-home"></img>
-        </Link>
-      </div>
-      <div className="main">
-        <Outlet />
-      </div>
-      <div className="right-aside">
-        <div style={{ marginTop: "12px" }}>
-          <Link to="/login" className="login-signup-buttons">
-            Login
-          </Link>
+    <LoggedInContext.Provider value=''>
+      <div className="home-container">
+        <div className="navbar">
+          <div className='logo-searchbar-box'>
+            <Link to="/">
+              <img src="http://localhost:3000/jasmine.png" alt="home" className="logo"></img>
+            </Link>
+            <Searchbar />
+          </div>
+          <div className="login-signup-box">
+          { loggedIn === ''
+          ? <div>Logout</div>
+          : <>
+              <div className="login">
+                <Link to="/login" className="login-signup-buttons">
+                  Login
+                </Link>
+              </div>
+              <div className="signup">
+                <Link to="/signup" className="login-signup-buttons">
+                  Signup
+                </Link>
+              </div>
+            </> }
+          </div>
         </div>
-        <div style={{ marginTop: "12px", marginLeft: "10px" }}>
-          <Link to="/signup" className="login-signup-buttons">
-            Signup
-          </Link>
+        <div className="main">
+          <Outlet />
         </div>
       </div>
-    </div>
+    </LoggedInContext.Provider>
   );
 };
 
