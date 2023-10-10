@@ -31,10 +31,10 @@ const Feed = () => {
         <div className="feed-container" key={post._id}>
             <div className="feed-box">
               <div className="post-profile">
-                    <Link to="/profile" className="no-decoration">
+                    <Link to={'/' + post.userId} className="no-decoration">
                       <img className="post-profile-pic" alt="profile" src={ post.profilepic }></img>
                     </Link>
-                    <Link to="/profile" className="no-decoration ">
+                    <Link to={"/" + post.userId} className="no-decoration">
                       <div className="post-profile-name">{ post.user }</div>
                     </Link>
               </div>

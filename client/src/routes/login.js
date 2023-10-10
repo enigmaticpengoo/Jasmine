@@ -1,8 +1,24 @@
+import { useState } from "react";
 import { Form, Link, redirect } from "react-router-dom";
 
 const Login = () => {  
+  const [hidePassword, setHidePassword] = useState(true)
+
+  const hideHandler = (id) => {
+    const value = hidePassword
+    setHidePassword(!value)
+
+    let inputField = document.getElementById(id)
+
+    if (inputField.type === "password") {
+      inputField.type = "text";
+    } else {
+      inputField.type = "password";
+    }
+  }
+  
   return (
-    <div className="container form-box ">
+    <div className="container form-box">
       <Form method='post' action='/login'>
         <div className="form-item">
           <div>Email</div>
@@ -14,11 +30,18 @@ const Login = () => {
         </div>
         <div className="form-item">
           <div>Password</div>
-          <input
-            className="form-input input-border"
-            placeholder="Password"
-            name='password'
-          ></input>
+          <div className="relative input-border">
+            <input
+              className="form-input-password"
+              placeholder="Password"
+              type="password"
+              name='password'
+              id='password'
+            ></input>
+            {(hidePassword
+              ? <img className='show-icon' src='show.png' onClick={() => hideHandler('password')}/>
+              : <img className='show-icon' src='hide.png' onClick={() => hideHandler('password')}/>)}
+          </div>
         </div>
         <button className="button form-button" type='submit'>Login</button>
         <div className="form-item-small">Login Using Google</div>
@@ -49,9 +72,11 @@ export const loginAction = async ({ request }) => {
       },
       body: JSON.stringify(data)
     })
+    
     const res = await response.json()
-    console.log('Got access token: ' + res.accessToken)
+
     document.cookie = 'accessToken=' + res.accessToken
+    document.cookie = 'userId=' + res.userId
   }
 
    checkUser(submission)

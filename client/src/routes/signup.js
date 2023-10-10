@@ -1,9 +1,30 @@
+import { useState } from "react";
 import { Form, redirect, useActionData } from "react-router-dom";
 
 const BASE_API = 'http://127.0.0.1:3001' 
 
 const Signup = () => {
   const data = useActionData()
+  const [hidePassword, setHidePassword] = useState(true)
+  const [hideRetypePassword, setHideRetypePassword] = useState(true)
+
+  const hideHandler = (id) => {
+    let inputField = document.getElementById(id)
+
+    if (id === 'password') {
+      const value = hidePassword
+      setHidePassword(!value)
+    } else {
+      const value = hideRetypePassword
+      setHideRetypePassword(!value)
+    }
+
+    if (inputField.type === "password") {
+      inputField.type = "text";
+    } else {
+      inputField.type = "password";
+    }
+  }
 
   return (
     <div className="form-box container">
@@ -23,11 +44,21 @@ const Signup = () => {
         </div>
         <div className="form-item">
           <div>Password</div>
-          <input className="form-input input-border" name="password"></input>
+          <div className='relative input-border'>
+            <input className="form-input-password" type='password' name="password" id='password'></input>
+            {(hidePassword
+            ? <img className='show-icon' src='show.png' onClick={() => hideHandler('password')}/>
+            : <img className='show-icon' src='hide.png' onClick={() => hideHandler('password')}/>)}
+          </div>
         </div>
         <div className="form-item">
           <div>Retype Password</div>
-          <input className="form-input input-border" name="retypePassword"></input>
+          <div className="relative input-border">
+            <input className="form-input-password" type='password' name="retypePassword" id='retypePassword'></input>
+            {(hideRetypePassword
+              ? <img className='show-icon' src='show.png' onClick={() => hideHandler('retypePassword')}/>
+              : <img className='show-icon' src='hide.png' onClick={() => hideHandler('retypePassword')}/>)}
+          </div>
         </div>
         <button className="button form-button" type='submit'>Create</button>
       </Form>
@@ -37,7 +68,6 @@ const Signup = () => {
 
 export default Signup;
 
-// COPY
 export const signupAction = async ({ request }) => {
   const data = await request.formData()
 

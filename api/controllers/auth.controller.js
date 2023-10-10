@@ -5,6 +5,7 @@ const cors = require('cors')
 const express = require('express')
 const app = express()
 require('dotenv')
+const uid = require('uid-safe')
 
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
@@ -12,16 +13,32 @@ var bcrypt = require("bcryptjs");
 app.use(cors())
 app.use(express.json())
 
-const signup = (req, res) => {
-  const user = new User({
-    user: req.body.user,
-    email: req.body.email,
-    password: bcrypt.hashSync(req.body.password)
-  });
+const signup = async (req, res) => {
+  let userId = await uid(18).then(function (string) {
+    return string
+  })
 
-  console.log('user created')
+  const userIdUnique = await User.findOne({
+    userId: userId
+  })
+  
+  console.log(userIdUnique)
+  console.log(!userIdUnique)
 
-  user.save();
+  if (!userIdUnique) {
+    const user = new User({
+      userId: userId,
+      user: req.body.user,
+      email: req.body.email,
+      password: bcrypt.hashSync(req.body.password)
+    });
+
+    console.log('user created')
+
+    user.save();
+  } else {
+    throw new Error('Something went wrong! Please try again.')
+  }
 };
 
 const login = (req, res) => {
@@ -52,7 +69,7 @@ const login = (req, res) => {
       })
       uploadRefreshToken.save()
 
-      res.send({ accessToken: accessToken })
+      res.send({ accessToken: accessToken, userId: user.userId })
     });
 };
 

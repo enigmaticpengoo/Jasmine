@@ -1,6 +1,7 @@
 const { authenticateToken } = require('../controllers/auth.controller')
 const Post = require('../models/post')
-const cookie = require('cookie')
+const cookie = require('cookie');
+const User = require('../models/user');
 
 module.exports = function(app) {
     app.use(function(req, res, next) {
@@ -27,10 +28,14 @@ app.get('/post/:id', async (req, res) => {
     res.json(post)
 })
 
-app.post('/posts', authenticateToken, (req, res) => {       
-    console.log(req.body.content)
+app.post('/posts', authenticateToken, async (req, res) => {       
+    const user = await User.findOne({ userId: req.body.userId })
+
     const post = new Post({
-        content: req.body.content
+        content: req.body.content,
+        userId: user.userId,
+        user: user.user,
+        profilepic: user.profilepic
     })
 
     post.save()

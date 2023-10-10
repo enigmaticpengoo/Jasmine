@@ -6,22 +6,29 @@ const BASE_API = 'http://127.0.0.1:3001'
 const Postbox = () => {
   async function makePost() {
     if (value !== "") {
-    let decodedCookie = decodeURIComponent(document.cookie).split('=')[1]
-    const data = await fetch(BASE_API + '/posts', {
+      let accessTokenIndex = decodeURIComponent(document.cookie).indexOf('accessToken=')
+      let accessTokenSlice = decodeURIComponent(document.cookie).slice(accessTokenIndex)
+      let accessToken = accessTokenSlice.split(';')[0].split('=')[1]
+    
+    let userIdIndex = decodeURIComponent(document.cookie).indexOf('userId=')
+    let userIdSlice = decodeURIComponent(document.cookie).slice(userIdIndex)
+    let userId = userIdSlice.split(';')[0].split('=')[1]
+
+    await fetch(BASE_API + '/posts', {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": 'Bearer ' + decodedCookie
+        "Authorization": 'Bearer ' + accessToken
       },
       body: JSON.stringify({
-        content: value
+        content: value,
+        userId: userId
       })
     })
-
-    if (data.bodyUsed) {
-      console.log('body was used')
+    .then(res => res.json())
+    .then(data => {if (data.accessToken) {
       document.cookie = 'accessToken=' + data.accessToken
-    }
+    }})
 
     setValue('')
     } return

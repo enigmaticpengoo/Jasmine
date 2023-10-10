@@ -5,10 +5,13 @@ const postSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    userId: {
+        type: String,
+        required: true,
+    },
     user: {
         type: String,
         required: true,
-        default: 'Andrew Falbo',
     },
     profilepic: {
         type: String,
