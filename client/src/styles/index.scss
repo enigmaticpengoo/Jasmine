@@ -253,6 +253,23 @@ top: 0;
     }
 }
 
+.logout-button {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    right: 0;
+    margin-right: 110px;
+    margin-top: 20px;
+    text-decoration: none;
+    &:hover {
+        color:rgb(0, 0, 0);
+        cursor: pointer;
+    }
+    &:active {
+        text-decoration: underline;
+    }
+}
+
 // Main
 .main {
     width: 50%;

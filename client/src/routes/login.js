@@ -76,10 +76,12 @@ export const loginAction = async ({ request }) => {
     const res = await response.json()
 
     document.cookie = 'accessToken=' + res.accessToken
-    document.cookie = 'userId=' + res.userId
+    const user = { userId: res.user.userId, user: res.user.user, profilepic: res.user.profilepic }
+    const newUser = JSON.stringify(user)
+    localStorage.setItem('user', newUser)
   }
+  
+  checkUser(submission)
 
-   checkUser(submission)
-
-  return redirect('/');
+  return redirect('/')
 }

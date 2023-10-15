@@ -1,5 +1,6 @@
 const Followers = require('../models/followers');
 const Following = require('../models/following');
+const RefreshToken = require('../models/refreshTokens');
 const User = require('../models/user')
 const uid = require('uid-safe')
 
@@ -11,8 +12,6 @@ module.exports = function(app) {
 
 app.get('/user/:id', async (req, res) => {
     const user = await User.findOne({ userId: req.params.id })
-    
-    console.log(user)
 
     res.send(user)
 })
@@ -61,6 +60,12 @@ app.get('/user/test', async (req, res) => {
     
 //     res.json(user)
 // })
+
+app.delete('/logout', async (req, res) => {
+    const token = await RefreshToken.findOneAndDelete({ userId: req.userId })
+
+    res.json(token)
+})
 
 app.delete('/user/delete/:email', async (req, res) => {
     const user = await User.deleteOne({ email: req.params.email })

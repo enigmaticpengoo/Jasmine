@@ -1,38 +1,37 @@
+import { useOutletContext } from "react-router-dom";
 import useAutosizeTextArea from "../modules/useAutosizeTextArea";
 import React, { useRef, useState } from "react";
 
 const BASE_API = 'http://127.0.0.1:3001'
 
 const Postbox = () => {
+  const loggedIn = useOutletContext()
+  
   async function makePost() {
     if (value !== "") {
       let accessTokenIndex = decodeURIComponent(document.cookie).indexOf('accessToken=')
       let accessTokenSlice = decodeURIComponent(document.cookie).slice(accessTokenIndex)
       let accessToken = accessTokenSlice.split(';')[0].split('=')[1]
-    
-    let userIdIndex = decodeURIComponent(document.cookie).indexOf('userId=')
-    let userIdSlice = decodeURIComponent(document.cookie).slice(userIdIndex)
-    let userId = userIdSlice.split(';')[0].split('=')[1]
 
-    await fetch(BASE_API + '/posts', {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": 'Bearer ' + accessToken
-      },
-      body: JSON.stringify({
-        content: value,
-        userId: userId
+      await fetch(BASE_API + '/posts', {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": 'Bearer ' + accessToken
+        },
+        body: JSON.stringify({
+          content: value,
+          userId: loggedIn.userId
+        })
       })
-    })
-    .then(res => res.json())
-    .then(data => {if (data.accessToken) {
-      document.cookie = 'accessToken=' + data.accessToken
-    }})
+      .then(res => res.json())
+      .then(data => {if (data.accessToken) {
+        document.cookie = 'accessToken=' + data.accessToken
+      }})
 
-    setValue('')
-    } return
-  }
+      setValue('')
+      } return
+    }
 
   const [value, setValue] = useState("");
   const textAreaRef = useRef(null);

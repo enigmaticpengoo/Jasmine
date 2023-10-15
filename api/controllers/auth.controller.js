@@ -58,23 +58,23 @@ const login = (req, res) => {
         });
       }
 
-      const email = { name: req.body.email }
+      const userId = { userId: user.userId }
 
-      const accessToken = jwt.sign(email, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '5m' })
-      const refreshToken = jwt.sign(email, process.env.REFRESH_TOKEN_SECRET)
+      const accessToken = jwt.sign(userId, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '10m' })
+      const refreshToken = jwt.sign(userId, process.env.REFRESH_TOKEN_SECRET)
 
       const uploadRefreshToken = new RefreshToken({
         value: refreshToken,
-        email: req.body.email
+        userId: user.userId
       })
       uploadRefreshToken.save()
 
-      res.send({ accessToken: accessToken, userId: user.userId })
+      res.send({ accessToken: accessToken, user })
     });
 };
 
-async function checkRefreshToken() {
-  const refresh = await RefreshToken.findOne({ email: 'falbokev@gmail.com' }, 'value')
+async function checkRefreshToken(userId) {
+  const refresh = await RefreshToken.findOne({ userId: userId }, 'value')
 
   jwt.verify(refresh['value'], process.env.REFRESH_TOKEN_SECRET, (err, user) => {
       if (err) {
@@ -88,13 +88,14 @@ async function checkRefreshToken() {
 async function authenticateToken(req, res, next) {
   const authHeader = req.headers['authorization']
   const token = authHeader && authHeader.split(' ')[1]
+  const userId = req.body.userId
     
   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
     if (err) {
       console.log('accessToken invalid, checking refresh token')
-      checkRefreshToken()
+      checkRefreshToken(userId)
       console.log('setting access token')
-      const accessToken = jwt.sign({ name: 'falbokev@gmail.com' }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '5m' })
+      const accessToken = jwt.sign({ userId: userId }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '10m' })
       console.log('new access token: ' + accessToken)
       res.send({ accessToken: accessToken })
       next()

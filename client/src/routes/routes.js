@@ -5,6 +5,7 @@ import Root from "./root.js";
 import Login, { loginAction } from "./login.js";
 import Signup, { signupAction } from "./signup.js";
 import Post from "./post.js";
+import LoginSuccessful from "./loginsuccessful.js";
 
 const router = createBrowserRouter([
   {
@@ -32,6 +33,10 @@ const router = createBrowserRouter([
         path: "/signup",
         element: <Signup />,
         action: signupAction
+      },
+      {
+        path: "/loginsuccessful",
+        element: <LoginSuccessful />
       }
     ],
   },
