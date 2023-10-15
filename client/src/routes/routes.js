@@ -2,7 +2,7 @@ import { createBrowserRouter } from "react-router-dom";
 import Home from "./home.js";
 import Profile from "./profile.js";
 import Root from "./root.js";
-import Login, { loginAction } from "./login.js";
+import Login from "./login.js";
 import Signup, { signupAction } from "./signup.js";
 import Post from "./post.js";
 import LoginSuccessful from "./loginsuccessful.js";
@@ -27,7 +27,6 @@ const router = createBrowserRouter([
       {
         path: "/login",
         element: <Login />,
-        action: loginAction
       },
       {
         path: "/signup",

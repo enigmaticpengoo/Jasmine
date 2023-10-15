@@ -1,4 +1,4 @@
-import { Link, Outlet, redirect } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 import { useState } from 'react';
 import Searchbar from "../components/searchbar";
 
@@ -21,7 +21,7 @@ const Root = () => {
     // set localstorage to null
     localStorage.setItem('user', null)
 
-    window.location.replace('/')
+    window.location.reload()
   }
 
   return (
