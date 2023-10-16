@@ -15,10 +15,10 @@ app.get('/posts', async (req, res) => {
     res.json(posts)
 })
 
-app.get('/user/posts', authenticateToken, async (req, res) => {
+app.get('/posts/:id', async (req, res) => {
+    const sortedPosts = await Post.find().sort({ timestamp: -1 })
+    const posts = sortedPosts.filter((post) => post.userId === req.params.id)
 
-    const posts = (await Post.find())
-        .filter(post => post.user === req.user.name)
     res.json(posts)
 })
 

@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
 import Postbox from "../components/postbox.js";
 import Profilefeed from "../components/profilefeed.js";
+import { useOutletContext } from "react-router-dom";
 
 const API_BASE = 'http://localhost:3001'
 
 const Profile = () => {
+  const [loggedIn, setLoggedIn] = useOutletContext()
+  
   const [user, setUser] = useState([])
 
   useEffect(() => {
@@ -68,14 +71,13 @@ const Profile = () => {
     // map list of followers and their profile pics on popup window
   }
 
-  function followHandler() {
-    console.log(user)
+  async function followHandler() {
+    const follower = loggedIn.userId
+    const following = window.location.pathname
     
-    // Follow
-    // If username is truthy
-    // then grab the followed user's email and save it to the following users Following document
-    // save the following user's email to the followed user's Followers document
-    // change the follow button to say unfollow and change its background color or border
+    await fetch(`http://localhost:3001/user/${follower}${following}`, {
+      method: 'POST'
+    })
   }
 
   return (

@@ -41,11 +41,35 @@ app.get('/user/test', async (req, res) => {
 //     res.json(followers)
 // })
 
-// app.post('/user/follow', (req, res) => {
-//     console.log(req.body.user)
+app.post('/user/:follower/:following', async (req, res) => {
+    const firstResult = await User.findOne({ userId: req.params.following })
+    const followers = new Followers({
+        userId: firstResult.userId,
+        user: firstResult.user,
+        profilepic: firstResult.profilepic
+    })
 
-//     res.json(req.body.user)
-// })
+    followers.save()
+
+    const followerIncrement = firstResult.followers + 1
+    await User.updateOne({ userId: req.params.following }, { followers: followerIncrement})
+
+    const secondResult = await User.findOne({ userId: req.params.follower })
+    const following = new Following({
+        userId: secondResult.userId,
+        user: secondResult.user,
+        profilepic: secondResult.profilepic
+    })
+
+    following.save()
+
+    const followingIncrement = firstResult.following + 1
+    await User.updateOne({ userId: req.params.following }, { following: followingIncrement})    
+
+    const result = { followers, following }
+
+    res.json(result)
+})
 
 // app.post('/user/signup', (req, res) => {
 //     console.log(req.body)

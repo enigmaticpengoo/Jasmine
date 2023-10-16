@@ -9,6 +9,8 @@ const uid = require('uid-safe')
 
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
+const Following = require('../models/following')
+const Followers = require('../models/followers')
 
 app.use(cors())
 app.use(express.json())
@@ -21,9 +23,6 @@ const signup = async (req, res) => {
   const userIdUnique = await User.findOne({
     userId: userId
   })
-  
-  console.log(userIdUnique)
-  console.log(!userIdUnique)
 
   if (!userIdUnique) {
     const user = new User({
@@ -33,9 +32,19 @@ const signup = async (req, res) => {
       password: bcrypt.hashSync(req.body.password)
     });
 
-    console.log('user created')
-
     user.save();
+
+    const following = new Following({
+      userId: userId
+    })
+
+    following.save()
+
+    const followers = new Followers({
+      userId: userId
+    })
+
+    followers.save()
   } else {
     throw new Error('Something went wrong! Please try again.')
   }

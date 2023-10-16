@@ -1,16 +1,29 @@
 const mongoose = require('mongoose')
 
 const followersSchema = new mongoose.Schema({
-    user: {
+    userId: {
         type: String,
-        required: true,
-        default: 'Andrew Falbo',
+        required: true
     },
-    profilepic: {
-        type: String,
-        required: true,
-        default: 'http://localhost:3000/profilepic.png'
+    followersCount: {
+        type: Number,
+        default: 0
     },
+    followers: [{    
+        userId: {
+            type: String,
+            required: true
+        },
+        user: {
+            type: String,
+            required: true
+        },
+        profilepic: {
+            type: String,
+            required: true,
+            default: 'http://localhost:3000/profilepic.png'
+        },
+    }]
 })
 
 const Followers = mongoose.model('Followers', followersSchema)

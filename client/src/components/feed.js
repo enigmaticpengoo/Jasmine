@@ -29,22 +29,21 @@ const Feed = () => {
     <div className="feed">
       {posts.map(post => (
         <div className="feed-container" key={post._id}>
-            <div className="feed-box">
-              <div className="post-profile">
-                    <Link to={'/' + post.userId} className="no-decoration">
-                      <img className="post-profile-pic" alt="profile" src={ post.profilepic }></img>
-                    </Link>
-                    <Link to={"/" + post.userId} className="no-decoration">
-                      <div className="post-profile-name">{ post.user }</div>
-                    </Link>
-              </div>
-              <Link to={'/post/' + post._id} className="no-decoration">
-                <div className="content-box">
-                  { post.content }
-                </div>
+          <div className="feed-box">
+            <div className="post-profile">
+              <Link to={'/' + post.userId} className="no-decoration">
+                <img className="post-profile-pic" alt="profile" src={ post.profilepic }></img>
+              </Link>
+              <Link to={"/" + post.userId} className="no-decoration">
+                <div className="post-profile-name">{ post.user }</div>
               </Link>
             </div>
-          
+            <Link to={'/post/' + post._id} className="no-decoration">
+              <div className="content-box">
+                { post.content }
+              </div>
+            </Link>
+          </div>
         </div>
       ))}
     </div>
