@@ -83,6 +83,10 @@ top: 0;
     position: relative;
 }
 
+.error {
+    color: rgb(224, 15, 15);
+}
+
 // Post
 .post-box {
     position: relative;
@@ -91,7 +95,7 @@ top: 0;
     border: 1px solid lightgray;
     padding: 5px;
     border-radius: 20px;
-    margin: 20px 0px;
+    margin: 10px 0px;
     padding-bottom: 50px;
     max-height: 160px;
 }
@@ -140,6 +144,33 @@ top: 0;
     height: 32px;
     width: 54px;
     font-size: 14px;
+}
+
+// Feed Selector
+.feed-selector-container {
+    display: flex;
+    justify-content: center;
+}
+
+.feed-selector-box {
+    display: flex;
+    justify-content: center;
+    cursor: pointer;
+    height: 28px;
+}
+
+.feed-selector-item {
+    display: flex;
+    font-size: 17px;
+    padding: 0px 5px;
+    width: 265px;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid lightgray;
+    &:hover {
+        background-color: rgb(246, 246, 246);
+        border: 1px solid lightgray;
+    }
 }
 
 // Feed
@@ -193,7 +224,8 @@ top: 0;
 
 // Navbar
 .navbar {
-    position: relative;
+    display: flex;
+    justify-content: space-between;
     height: 64px;
     width: 100%;
     border-bottom: 1px solid lightgray;
@@ -222,8 +254,6 @@ top: 0;
 }
 
 .logo-searchbar-box {
-    position: absolute;
-    left: 0;
     display: flex;
     align-items: center;
     padding-left: 10px;
@@ -233,10 +263,8 @@ top: 0;
 .login-signup-box {
     display: flex;
     align-items: center;
-    position: absolute;
-    right: 0;
-    padding-right: 110px;
-    padding-top: 20px;
+    position: relative;
+    margin-right: 100px;
 }
 
 .signup {
@@ -254,12 +282,7 @@ top: 0;
 }
 
 .logout-button {
-    display: flex;
-    align-items: center;
-    position: absolute;
-    right: 0;
-    margin-right: 110px;
-    margin-top: 20px;
+    margin-top: 5px;
     text-decoration: none;
     &:hover {
         color:rgb(0, 0, 0);
@@ -269,6 +292,43 @@ top: 0;
         text-decoration: underline;
     }
 }
+
+.user-box {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.user-box-item {
+    margin-right: 5px;
+    font-size: 17px;
+}
+
+.user-popup {
+    visibility: hidden;
+    width: 120px;
+    color: #000;
+    text-align: center;
+    border-radius: 8px;
+    border: 1px solid lightgray;
+    padding: 8px 0;
+    position: absolute;
+    z-index: 1;
+    top: 88%;
+    right: 5%;
+  }
+
+  .down-arrow {
+    width: 13px;
+    margin-top: 2px;
+  }
+
+  .profile-button {
+    padding-bottom: 6px;
+    display: block;
+    width: 120px;
+    border-bottom: 1px solid lightgray
+  }
 
 // Main
 .main {

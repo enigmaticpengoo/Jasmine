@@ -9,16 +9,34 @@ const Profile = () => {
   const [loggedIn, setLoggedIn] = useOutletContext()
   
   const [user, setUser] = useState([])
+  const [follow, setFollow] = useState([])
+
+  console.log(follow)
+
+  useEffect(() => {
+    GetFollow()
+  }, [])
+
+  async function GetFollow() {
+    if (loggedIn) {
+      const follower = loggedIn.userId
+      const following = window.location.pathname
+      
+      const result = await fetch(`http://localhost:3001/user/${follower}${following}`)
+      .then(res => res.json())
+      .then(data => setFollow(data))
+      .catch(err => console.error('Error: ', err))
+    }
+  }
 
   useEffect(() => {
     GetUser()
   }, [])
 
   function GetUser() {
-    let path = window.location.pathname
-    let userId = path.split('/')[1]
+    let userId = window.location.pathname
 
-    fetch(API_BASE + '/user/' + userId)
+    fetch(API_BASE + '/user' + userId)
     .then(res => res.json())
     .then(data => setUser(data))
     .catch(err => console.error('Error: ', err))
@@ -59,25 +77,46 @@ const Profile = () => {
 //   })
 // }
 
-  function followingHandler() {
-    // Following Popup window
-    // get username on page's following document
-    // map list of following and their profile pics on popup window
+  async function followingHandler() {
+    const following = window.location.pathname
+    
+    const res = await fetch(`http://localhost:3001/user/following${following}`)
+
+    console.log(res)
   }
 
-  function followersHandler() {
-    // Followers popup window
-    // get username on page's followers document
-    // map list of followers and their profile pics on popup window
+  async function followersHandler() {
+    const follower = loggedIn.userId
+    
+    const res = await fetch(`http://localhost:3001/user/follower/${follower}`)
+
+    console.log(res)
   }
 
   async function followHandler() {
-    const follower = loggedIn.userId
-    const following = window.location.pathname
-    
-    await fetch(`http://localhost:3001/user/${follower}${following}`, {
-      method: 'POST'
-    })
+    if (loggedIn) {
+      const follower = loggedIn.userId
+      const following = window.location.pathname
+      
+      await fetch(`http://localhost:3001/user/${follower}${following}`, {
+        method: 'POST'
+      })
+
+      setFollow(true)
+    }
+  }
+
+  async function unfollowHandler() {
+    if (loggedIn) {
+      const follower = loggedIn.userId
+      const following = window.location.pathname
+      
+      await fetch(`http://localhost:3001/user/${follower}${following}`, {
+        method: 'DELETE'
+      })
+
+      setFollow(false)
+    }
   }
 
   return (
@@ -93,9 +132,16 @@ const Profile = () => {
             <div className="follow-box">
               <a href="#" className="follow-box-item" onClick={followingHandler}>Following: {user.following}</a>
               <a href="#" className="follow-box-item" onClick={followersHandler}>Followers: {user.followers}</a>
+              { follow
+              ?
+              <button className="follow-box-item button follow-button" onClick={unfollowHandler}>
+                Unfollow
+              </button>
+              :
               <button className="follow-box-item button follow-button" onClick={followHandler}>
                 Follow
               </button>
+              }
             </div>
           </div>
         </div>

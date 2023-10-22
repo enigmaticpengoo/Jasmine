@@ -8,30 +8,32 @@ const Postbox = () => {
   const [loggedIn, setLoggedIn] = useOutletContext()
 
   async function makePost() {
-    if (value !== "") {
-      let accessTokenIndex = decodeURIComponent(document.cookie).indexOf('accessToken=')
-      let accessTokenSlice = decodeURIComponent(document.cookie).slice(accessTokenIndex)
-      let accessToken = accessTokenSlice.split(';')[0].split('=')[1]
+    if (loggedIn === null) {
+      console.log('please log in')
+    } if (value !== "") {
+        let accessTokenIndex = decodeURIComponent(document.cookie).indexOf('accessToken=')
+        let accessTokenSlice = decodeURIComponent(document.cookie).slice(accessTokenIndex)
+        let accessToken = accessTokenSlice.split(';')[0].split('=')[1]
 
-      await fetch(BASE_API + '/posts', {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": 'Bearer ' + accessToken
-        },
-        body: JSON.stringify({
-          content: value,
-          userId: loggedIn.userId
+        await fetch(BASE_API + '/posts', {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": 'Bearer ' + accessToken
+          },
+          body: JSON.stringify({
+            content: value,
+            userId: loggedIn.userId
+          })
         })
-      })
-      .then(res => res.json())
-      .then(data => {if (data.accessToken) {
-        document.cookie = 'accessToken=' + data.accessToken
-      }})
+        .then(res => res.json())
+        .then(data => {if (data.accessToken) {
+          document.cookie = 'accessToken=' + data.accessToken
+        }})
 
-      setValue('')
-      } return
-    }
+        setValue('')
+        } return
+      }
 
   const [value, setValue] = useState("");
   const textAreaRef = useRef(null);

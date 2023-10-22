@@ -29,7 +29,7 @@ const Signup = () => {
   return (
     <div className="form-box container">
       <Form method='post' action='/signup'>
-        {data && data.error && <p>{data.error}</p>}
+        {data && data.error && <p className="error">{data.error}</p>}
         <div className="form-item">
         <div>First Name</div>
           <input className="form-input input-border" name="firstName"></input>
@@ -87,11 +87,13 @@ export const signupAction = async ({ request }) => {
     }).then(res => res.json())
   }
 
-  if (data.get('password') === data.get('retypePassword')) {
-    console.log(submission)
+  if (submission.email.includes('@') && submission.email.includes('.')) {
+    return {error: '*please use a valid email*'}
+  } if (data.get('password') !== data.get('retypePassword')) {
+      return {error: '*passwords do not match*'}
+  } else {
+      addUser(submission)
 
-    addUser(submission)
-
-    return redirect('/login');
-  } return {error: '*passwords do not match*'}
+      return redirect('/login');
+    } 
 }

@@ -2,8 +2,9 @@ import { Link, Outlet } from "react-router-dom";
 import { useState } from 'react';
 import Searchbar from "../components/searchbar";
 
-const Root = () => {
+const Root = () => { 
   const [loggedIn, setLoggedIn] = useState(JSON.parse(localStorage.getItem('user')))
+  const [popup, setPopup] = useState(false)
 
   const handleLogout = async () => {
     // make delete request to /logout, send userId with request
@@ -24,6 +25,16 @@ const Root = () => {
     window.location.reload()
   }
 
+  const handlePopup = () => {
+    setPopup(!popup)
+    
+    let userPopup = document.getElementById('user-popup')
+    let visibility
+    popup ? visibility = 'visible' : visibility = 'hidden'
+
+    userPopup.style.visibility = visibility
+  }
+
   return (
     <div className="home-container">
       <div className="navbar">
@@ -35,7 +46,17 @@ const Root = () => {
         </div>
         <div className="login-signup-box">
         { loggedIn
-        ? <div className="logout-button" onClick={handleLogout}>Logout</div>
+        ? <>
+            <div className="user-box" onClick={handlePopup}>
+              <img className="post-profile-pic user-box-item" src={loggedIn.profilepic}></img>
+              <div className="user-box-item">{loggedIn.user}</div>
+              <img className='down-arrow user-box-item' src='http://localhost:3000/drop-down-arrow.png'></img>
+            </div>
+            <div className="user-popup" id='user-popup'>
+              <Link to={`/${loggedIn.userId}`} className="profile-button no-decoration">Profile</Link>
+              <div className="logout-button" onClick={handleLogout}>Logout</div>
+            </div>
+          </>
         : <>
             <div className="login">
               <Link to="/login" className="login-signup-buttons">

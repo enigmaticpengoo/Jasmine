@@ -1,5 +1,4 @@
-const Followers = require('../models/followers');
-const Following = require('../models/following');
+const Follow = require('../models/follow');
 const RefreshToken = require('../models/refreshTokens');
 const User = require('../models/user')
 const uid = require('uid-safe')
@@ -41,35 +40,63 @@ app.get('/user/test', async (req, res) => {
 //     res.json(followers)
 // })
 
-app.post('/user/:follower/:following', async (req, res) => {
-    const firstResult = await User.findOne({ userId: req.params.following })
-    const followers = new Followers({
-        userId: firstResult.userId,
-        user: firstResult.user,
-        profilepic: firstResult.profilepic
-    })
+app.get('/user/following/:following', async (req, res) => {
+    const following = await Follow.findOne({ followerId: req.params.following })
 
-    followers.save()
-
-    const followerIncrement = firstResult.followers + 1
-    await User.updateOne({ userId: req.params.following }, { followers: followerIncrement})
-
-    const secondResult = await User.findOne({ userId: req.params.follower })
-    const following = new Following({
-        userId: secondResult.userId,
-        user: secondResult.user,
-        profilepic: secondResult.profilepic
-    })
-
-    following.save()
-
-    const followingIncrement = firstResult.following + 1
-    await User.updateOne({ userId: req.params.following }, { following: followingIncrement})    
-
-    const result = { followers, following }
-
-    res.json(result)
+    res.json(following)
 })
+
+app.get('/user/follower/:follower'), async (req, res) => {
+    const follower = await Follow.findOne({ followingId: req.params.follower })
+
+    res.json(follower)
+}
+
+app.get('/user/:follower/:following', async (req, res) => {
+    if (await Follow.findOne({
+            followerId: req.params.follower,
+            followingId: req.params.following
+        })) {
+            res.send(true)
+        } else {
+            res.send(false)
+        }
+})
+
+app.post('/user/:follower/:following', async (req, res) => {
+    const followerUser = await User.findOne({ userId: req.params.follower })
+    const followingUser = await User.findOne({ userId: req.params.following })
+
+    const follow = new Follow({
+            followerId: followerUser.userId,
+            followerUser: followerUser.user,
+            followerProfilepic: followerUser.profilepic,
+            followingId: followingUser.userId,
+            followingUser: followingUser.user,
+            followingProfilepic: followingUser.profilepic
+        })
+
+    follow.save()
+
+    await User.updateOne({ userId: req.params.follower }, { $inc: { following: 1 }}) 
+    await User.updateOne({ userId: req.params.following }, { $inc: { followers: 1 }})   
+
+    res.json(follow)
+})
+
+
+app.delete('/user/:follower/:following', async (req, res) => {
+    const unfollow = await Follow.findOneAndDelete({
+            followerId: req.params.follower,
+            followingId: req.params.following
+        })
+
+    await User.updateOne({ userId: req.params.follower }, { $inc: { following: -1 }}) 
+    await User.updateOne({ userId: req.params.following }, { $inc: { followers: -1 }})   
+
+    res.json(unfollow)
+})
+
 
 // app.post('/user/signup', (req, res) => {
 //     console.log(req.body)

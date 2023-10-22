@@ -9,8 +9,6 @@ const uid = require('uid-safe')
 
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
-const Following = require('../models/following')
-const Followers = require('../models/followers')
 
 app.use(cors())
 app.use(express.json())
@@ -33,18 +31,6 @@ const signup = async (req, res) => {
     });
 
     user.save();
-
-    const following = new Following({
-      userId: userId
-    })
-
-    following.save()
-
-    const followers = new Followers({
-      userId: userId
-    })
-
-    followers.save()
   } else {
     throw new Error('Something went wrong! Please try again.')
   }
@@ -101,12 +87,8 @@ async function authenticateToken(req, res, next) {
     
   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
     if (err) {
-      console.log('accessToken invalid, checking refresh token')
       checkRefreshToken(userId)
-      console.log('setting access token')
-      const accessToken = jwt.sign({ userId: userId }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '10m' })
-      console.log('new access token: ' + accessToken)
-      res.send({ accessToken: accessToken })
+      jwt.sign({ userId: userId }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '10m' })
       next()
     } else {
     next()
