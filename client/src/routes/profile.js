@@ -11,8 +11,6 @@ const Profile = () => {
   const [user, setUser] = useState([])
   const [follow, setFollow] = useState([])
 
-  console.log(follow)
-
   useEffect(() => {
     GetFollow()
   }, [])
@@ -41,41 +39,6 @@ const Profile = () => {
     .then(data => setUser(data))
     .catch(err => console.error('Error: ', err))
   }
-//   const [user, setUser] = useState('falbokev@gmail.com')
-  
-//   useEffect(() => {
-//     GetFollowing()
-//   }, [])
-
-//   function GetFollowing() {
-//     fetch(API_BASE + '/user/following')
-//     .then(res => res.json())
-//     .then(data => setFollowing(data))
-//     .catch(err => console.error('Error: ', err))
-//   }
-
-//   useEffect(() => {
-//     GetFollowers()
-//   }, [])
-
-//   function GetFollowers() {
-//     fetch(API_BASE + '/user/followers')
-//     .then(res => res.json())
-//     .then(data => setFollowers(data))
-//     .catch(err => console.error('Error: ', err))
-//   }
-
-//   function follow() {
-//     fetch(API_BASE + '/user/follow', {
-//       method: "POST",
-//       headers: {
-//         "Content-Type": "application/json"
-//       },
-//       body: JSON.stringify({
-//         user: user
-//       })
-//   })
-// }
 
   async function followingHandler() {
     const following = window.location.pathname

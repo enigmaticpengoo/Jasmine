@@ -1,19 +1,18 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useOutletContext } from "react-router-dom";
 
 const API_BASE = 'http://127.0.0.1:3001'
 
 const Followingfeed = () => {
-  const [posts, setPosts] = useState([])
+    const [loggedIn, setLoggedIn] = useOutletContext()
+    const [posts, setPosts] = useState([])
 
   useEffect(() => {
     GetPosts()
   }, [])
 
-  const userProfile = window.location.pathname
-
   function GetPosts() {
-    fetch(API_BASE + '/posts' + userProfile)
+    fetch(API_BASE + '/posts/follow/' + loggedIn.userId)
     .then(res => res.json())
     .then(data => setPosts(data))
     .catch(err => console.error('Error: ', err))

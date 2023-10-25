@@ -2,6 +2,7 @@ const { authenticateToken } = require('../controllers/auth.controller')
 const Post = require('../models/post')
 const cookie = require('cookie');
 const User = require('../models/user');
+const Follow = require('../models/follow');
 
 module.exports = function(app) {
     app.use(function(req, res, next) {
@@ -26,6 +27,16 @@ app.get('/post/:id', async (req, res) => {
     const post = await Post.findById(req.params.id)
     
     res.json(post)
+})
+
+app.get('/posts/follow/:id', async (req, res) => {
+    const followingObject = await Follow.find({ followerId: req.params.id })
+    const followingMap = followingObject.map(following => following.followingId)
+
+    const sortedPosts = await Post.find().sort({ timestamp: -1 })
+    const posts = sortedPosts.filter((post) => followingMap.includes(post.userId))
+
+    res.json(posts)
 })
 
 app.post('/posts', authenticateToken, async (req, res) => {       
