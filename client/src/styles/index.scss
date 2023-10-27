@@ -249,6 +249,45 @@ top: 0;
     padding-left: 10px;
 }
 
+.search-results {
+    margin: 3px 7px;
+}
+
+.search-results-box {
+    width: 225px;
+    height: 100px;
+    position: absolute;
+    top: 8%;
+    left: 5%;
+    z-index: 1;
+    border: solid 1px lightgray;
+    border-radius: 10px;
+}
+
+.search-results-item {
+    padding: 2px 5px;;
+    margin-top: 6px;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    &:hover {
+        background-color: lightgray;
+    }
+    &:hover * {
+        background-color: lightgray;
+    }
+}
+
+.search-profile-pic {
+    border-radius: 50%;
+    width: 40px;
+}
+
+.search-user {
+    font-size: 18px;
+    margin-left: 5px;
+}
+
 .logo {
     width: 45px;
 }

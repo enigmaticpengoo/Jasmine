@@ -1,10 +1,18 @@
 import { Link, Outlet } from "react-router-dom";
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Searchbar from "../components/searchbar";
 
 const Root = () => { 
   const [loggedIn, setLoggedIn] = useState(JSON.parse(localStorage.getItem('user')))
   const [popup, setPopup] = useState(false)
+
+  useEffect(() => {
+    let userPopup = document.getElementById('user-popup')
+    let visibility
+    popup ? visibility = 'visible' : visibility = 'hidden'
+
+    userPopup.style.visibility = visibility
+  }, [popup])
 
   const handleLogout = async () => {
     // make delete request to /logout, send userId with request
@@ -27,12 +35,8 @@ const Root = () => {
 
   const handlePopup = () => {
     setPopup(!popup)
-    
-    let userPopup = document.getElementById('user-popup')
-    let visibility
-    popup ? visibility = 'visible' : visibility = 'hidden'
 
-    userPopup.style.visibility = visibility
+    // useEffect
   }
 
   return (

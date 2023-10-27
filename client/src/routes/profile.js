@@ -44,16 +44,12 @@ const Profile = () => {
     const following = window.location.pathname
     
     const res = await fetch(`http://localhost:3001/user/following${following}`)
-
-    console.log(res)
   }
 
   async function followersHandler() {
     const follower = loggedIn.userId
     
     const res = await fetch(`http://localhost:3001/user/follower/${follower}`)
-
-    console.log(res)
   }
 
   async function followHandler() {

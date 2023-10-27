@@ -26,19 +26,18 @@ app.get('/user/test', async (req, res) => {
     
     res.json(userId)
 })
-// app.get('/user/following', async (req, res) => {
-//     const user = await User.findOne('req.user')
-//     const following = await Following.findOne({ user: user })
-    
-//     res.json(following)
-// })
 
-// app.get('/user/followers', async (req, res) => {
-//     const user = await User.findOne('req.user')
-//     const followers = await Followers.findOne({ user: user})
+app.get('/search/:query', async (req, res) => {
+    const result = await User.find({ user: req.params.query }).exec()
 
-//     res.json(followers)
-// })
+    console.log(result[0])
+
+    if (result[0]) {
+        res.json(result)
+    } else {
+        res.send(false)
+    }
+})
 
 app.get('/user/following/:following', async (req, res) => {
     const following = await Follow.findOne({ followerId: req.params.following })
@@ -96,21 +95,6 @@ app.delete('/user/:follower/:following', async (req, res) => {
 
     res.json(unfollow)
 })
-
-
-// app.post('/user/signup', (req, res) => {
-//     console.log(req.body)
-    
-//     const user = new User({
-//         username: req.body.username,
-//         password: req.body.password,
-//         email: req.body.email
-//     })
-
-//     user.save()
-    
-//     res.json(user)
-// })
 
 app.delete('/logout', async (req, res) => {
     const token = await RefreshToken.findOneAndDelete({ userId: req.userId })
