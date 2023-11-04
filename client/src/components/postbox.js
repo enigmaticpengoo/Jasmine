@@ -8,8 +8,9 @@ const Postbox = () => {
   const [loggedIn, setLoggedIn] = useOutletContext()
 
   async function makePost() {
-    if (loggedIn === null) {
+    if (!loggedIn) {
       console.log('please log in')
+      return
     } if (value !== "") {
         let accessTokenIndex = decodeURIComponent(document.cookie).indexOf('accessToken=')
         let accessTokenSlice = decodeURIComponent(document.cookie).slice(accessTokenIndex)

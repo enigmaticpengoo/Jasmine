@@ -78,13 +78,25 @@ const Profile = () => {
     }
   }
 
+  const uploadPhoto = (photoType) => {
+    const photo = photoType
+
+    
+  }
+
   return (
     <div className="container">
       <div className="profile-page">
         <div className="profile-box">
           <div className="pictures">
-            <img src={ user.coverphoto } className="cover-photo"></img>
-            <img src={ user.profilepic } className="profile-pic"></img>
+            <div className="coverphoto-box" onClick={() => uploadPhoto('coverphoto')}>
+              <img className="coverphoto" src={ user.coverphoto } />
+              <img className='coverphoto-camera' src='camera.png' />
+            </div>
+            <div className="profilepic-box" onClick={() => uploadPhoto('profilepic')}>
+              <img className="profilepic" src={ user.profilepic } />
+              <img className='profilepic-camera' src='camera.png' />
+            </div>
           </div>
           <div className="flex-container">
             <div className="profile-name">{ user.user }</div>

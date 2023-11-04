@@ -12,8 +12,11 @@ const Root = () => {
     let visibility
     popup ? visibility = 'visible' : visibility = 'hidden'
 
-    userPopup.style.visibility = visibility
-    popupCloser.style.visibility = visibility
+    if (userPopup) {
+      userPopup.style.visibility = visibility
+      popupCloser.style.visibility = visibility
+    }
+    
   }, [popup])
 
   const handlePopup = () => {

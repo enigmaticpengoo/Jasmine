@@ -423,19 +423,54 @@ border-bottom: 1px solid lightgray
     width: 50%;
 }
 
-.cover-photo {
-    display: block;
+.coverphoto-box {
+    position: relative;
     height: 250px; 
     width: 562px;
-    background-color: rgb(143, 142, 142);
+    &:hover > .coverphoto {
+        opacity: 40%
+    }
+    &:hover > .coverphoto-camera {
+        opacity: 60%;
+    }
+}
+
+.coverphoto {
+    height: 250px; 
+    width: 562px;
+    background-color: rgb(168, 168, 168);
     border-radius: 3px;
+}
+
+.coverphoto-camera {
+    width: 100px;
+    position: absolute;
+    top: 30%;
+    left: 41%;
+    background: rgb(0, 0, 0, 0.0);
+    opacity: 0%;
 }
 
 .pictures {
     position: relative;
 }
 
-.profile-pic {
+.profilepic-box {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 106px; 
+    width: 106px;
+    background: rgb(0, 0, 0, 0.0);
+    &:hover > .profilepic {
+        opacity: 40%
+    }
+    &:hover > .profilepic-camera {
+        opacity: 60%;
+    }
+}
+
+.profilepic {
     position: absolute;
     bottom: 0;
     padding: 1px;
@@ -443,6 +478,15 @@ border-bottom: 1px solid lightgray
     width: 100px;
     border-radius: 50%;
     border: 2px solid white;
+}
+
+.profilepic-camera {
+    width: 50px;
+    position: absolute;
+    top: 26%;
+    left: 27%;
+    background: rgb(0, 0, 0, 0.0);
+    opacity: 0%;
 }
 
 .profile-name {
@@ -521,4 +565,11 @@ border-bottom: 1px solid lightgray
     height: 24px;
     right: 4px;
     top: 3.5px;
+}
+
+.preview-profilepic {
+    margin-top: 5px;
+    margin-bottom: -5px;
+    width: 70px;
+    border-radius: 50%;
 }
