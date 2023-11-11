@@ -15,6 +15,14 @@
     width: 100%;
 }
 
+.m-t-5 {
+    margin-top: 5px;
+}
+
+.m-t-10 {
+    margin-top: 10px;
+}
+
 .flex-container {
     display: flex;
     flex-wrap: wrap;
@@ -231,6 +239,47 @@ top: 0;
     border-bottom: 1px solid lightgray;
 }
 
+.login-popup-box {
+    position: absolute;
+    border-radius: 10px;
+    top: 2%;
+    right: 30%;
+    width: 500px;
+    height: 35px;
+    display: flex;
+    justify-content: center;
+    vertical-align: middle;
+    background-color: rgb(180, 0, 0);
+    opacity: 0.95;
+    visibility: visible;
+}
+
+.login-popup-text {
+    position: absolute;
+    top: 5px;
+    color: $main-background;
+    text-align: center;
+    background-color: inherit;
+}
+
+.login-popup-link {
+    background-color: inherit;
+    color: $main-background;
+}
+
+.login-popup-clear {
+    position: absolute;
+    width: 18px;
+    background-color: rgb(0, 0, 0, 0.0);
+    top: 9px;
+    right: 5%;
+    cursor: pointer;
+}
+
+.login-popup-box .show {
+    visibility: visible;
+}
+
 .searchbar {
     width: 175px;
     height: 26px;
@@ -274,7 +323,6 @@ top: 0;
     max-height: 232px;
     position: absolute;
     top: 8%;
-    left: 5%;
     border: solid 1px lightgray;
     border-radius: 10px;
 }

@@ -8,7 +8,9 @@ const Followingfeed = () => {
     const [posts, setPosts] = useState([])
 
   useEffect(() => {
-    GetPosts()
+    if (loggedIn) {
+      GetPosts()
+    }
   }, [])
 
   function GetPosts() {
@@ -20,7 +22,9 @@ const Followingfeed = () => {
 
   return (
     <div className="feed">
-      {posts.map(post => (
+      {!loggedIn
+      ? <div className="container m-t-10">To use this feature login&nbsp;<Link to='login'>here</Link>.</div>
+      : posts.map(post => (
         <div className="feed-container" key={post._id}>
           <div className="feed-box">
             <div className="post-profile">

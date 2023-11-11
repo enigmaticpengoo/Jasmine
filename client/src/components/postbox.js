@@ -5,11 +5,11 @@ import React, { useRef, useState } from "react";
 const BASE_API = 'http://127.0.0.1:3001'
 
 const Postbox = () => {
-  const [loggedIn, setLoggedIn] = useOutletContext()
+  const [[loggedIn, setLoggedIn], [loginPopup, setLoginPopup]] = useOutletContext()
 
   async function makePost() {
     if (!loggedIn) {
-      console.log('please log in')
+      setLoginPopup(true)
       return
     } if (value !== "") {
         let accessTokenIndex = decodeURIComponent(document.cookie).indexOf('accessToken=')

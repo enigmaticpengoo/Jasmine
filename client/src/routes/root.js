@@ -3,8 +3,16 @@ import { useEffect, useState } from 'react';
 import Searchbar from "../components/searchbar";
 
 const Root = () => { 
-  const [loggedIn, setLoggedIn] = useState(JSON.parse(localStorage.getItem('user')))
+  const initializeLoggedIn = () => {
+    let state = JSON.parse(localStorage.getItem('user'))
+
+    return state
+  }
+
+  const [loggedIn, setLoggedIn] = useState(initializeLoggedIn)
+  const [loginPopup, setLoginPopup] = useState(false)
   const [popup, setPopup] = useState(false)
+  
 
   useEffect(() => {
     let userPopup = document.getElementById('user-popup')
@@ -21,6 +29,10 @@ const Root = () => {
 
   const handlePopup = () => {
     setPopup(!popup)
+  }
+
+  const loginPopupHandler = () => {
+    setLoginPopup(false)
   }
 
   const handleLogout = async () => {
@@ -45,6 +57,15 @@ const Root = () => {
   return (
     <div className="home-container">
       <div className="navbar">
+        {loginPopup && <div className="login-popup-box">
+          <div className="login-popup-text">
+            To use this feature
+            <Link className="login-popup-link" to='signup' onClick={loginPopupHandler}>create an account</Link>
+            or
+            <Link className="login-popup-link" to='login' onClick={loginPopupHandler}>login</Link>
+          </div>
+          <img className="login-popup-clear" src='http://localhost:3000/login-clear.svg' onClick={loginPopupHandler} />
+        </div>}
         <div className='logo-searchbar-box'>
           <Link to="/">
             <img src="http://localhost:3000/jasmine.png" alt="home" className="logo"></img>
@@ -83,7 +104,7 @@ const Root = () => {
         </div>
       </div>
       <div className="main">
-        <Outlet context={[loggedIn, setLoggedIn]} />
+        <Outlet context={[[loggedIn, setLoggedIn], [loginPopup, setLoginPopup]]} />
       </div>
     </div>
   );
