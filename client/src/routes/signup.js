@@ -28,49 +28,52 @@ const Signup = () => {
   }
 
   return (
-    <div className="form-box container">
-      <Form method='post' action='/signup'>
-        {data && data.error && <p className="error">{data.error}</p>}
-        {selectedImage && (<div className="form-item">
-          <div>Preview</div>
-          <img className="preview-profilepic" src={URL.createObjectURL(selectedImage)} />
-        </div>)}
-        <div className="form-item">
-          <div>Choose a profile picture...</div>
-          <input type='file' accept='.jpg, .png' name='profilePicture' onChange={(e) => setSelectedImage(e.target.files[0])}></input>
-        </div>
-        <div className="form-item">
-        <div>First Name</div>
-          <input className="form-input input-border" name="firstName"></input>
-        </div>
-        <div className="form-item">
-        <div>Last Name</div>
-          <input className="form-input input-border" name="lastName"></input>
-        </div>
-        <div className="form-item">
-          <div>Email</div>
-          <input className="form-input input-border" name="email"></input>
-        </div>
-        <div className="form-item">
-          <div>Password</div>
-          <div className='relative input-border'>
-            <input className="form-input-password" type='password' name="password" id='password'></input>
-            {(hidePassword
-            ? <img className='show-icon' src='show.png' onClick={() => hideHandler('password')}/>
-            : <img className='show-icon' src='hide.png' onClick={() => hideHandler('password')}/>)}
+    <div className="signup-container">
+      {data && data.error && <p className="error">{data.error}</p>}
+      <div className="container">
+        
+        <Form className="form-box" method='post' action='/signup'>
+          {selectedImage && (<div className="form-item">
+            <div>Preview</div>
+            <img className="preview-profilepic" src={URL.createObjectURL(selectedImage)} />
+          </div>)}
+          <div className="form-item">
+            <div>Choose a profile picture...</div>
+            <input type='file' accept='.jpg, .png' name='profilePicture' onChange={(e) => setSelectedImage(e.target.files[0])}></input>
           </div>
-        </div>
-        <div className="form-item">
-          <div>Retype Password</div>
-          <div className="relative input-border">
-            <input className="form-input-password" type='password' name="retypePassword" id='retypePassword'></input>
-            {(hideRetypePassword
-              ? <img className='show-icon' src='show.png' onClick={() => hideHandler('retypePassword')}/>
-              : <img className='show-icon' src='hide.png' onClick={() => hideHandler('retypePassword')}/>)}
+          <div className="form-item">
+          <div>First Name</div>
+            <input className="form-input input-border" name="firstName"></input>
           </div>
-        </div>
-        <button className="button form-button" type='submit'>Create</button>
-      </Form>
+          <div className="form-item">
+          <div>Last Name</div>
+            <input className="form-input input-border" name="lastName"></input>
+          </div>
+          <div className="form-item">
+            <div>Email</div>
+            <input className="form-input input-border" name="email"></input>
+          </div>
+          <div className="form-item">
+            <div>Password</div>
+            <div className='relative input-border password-box'>
+              <input className="form-input-password" type='password' name="password" id='password'></input>
+              {(hidePassword
+              ? <img className='show-icon' src='show.png' onClick={() => hideHandler('password')}/>
+              : <img className='show-icon' src='hide.png' onClick={() => hideHandler('password')}/>)}
+            </div>
+          </div>
+          <div className="form-item">
+            <div>Retype Password</div>
+            <div className="relative input-border password-box">
+              <input className="form-input-password" type='password' name="retypePassword" id='retypePassword'></input>
+              {(hideRetypePassword
+                ? <img className='show-icon' src='show.png' onClick={() => hideHandler('retypePassword')}/>
+                : <img className='show-icon' src='hide.png' onClick={() => hideHandler('retypePassword')}/>)}
+            </div>
+          </div>
+          <button className="button form-button" type='submit'>Create</button>
+        </Form>
+      </div>
     </div>
   );
 };
@@ -82,27 +85,32 @@ export const signupAction = async ({ request }) => {
 
   const submission = {
     user: data.get('firstName') + ' ' + data.get('lastName'),
+    firstName: data.get('firstName'),
+    lastName: data.get('lastName'),
     email: data.get('email'),
-    password: data.get('password')
+    password: data.get('password'),
+    retypedPassword: data.get('retypePassword')
   }
 
   async function addUser(data) {
-    await fetch(BASE_API + '/auth/signup', {
+    const result = await fetch(BASE_API + '/auth/signup', {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
       body: JSON.stringify(data)
-    }).then(res => res.json())
+    })
+    .then(res => res.json())
+    .then(data => data.error)
+    .catch(err => console.error('Error: ', err))
+
+    return result
   }
 
-  if (submission.email.includes('@') && submission.email.includes('.')) {
-    return {error: '*please use a valid email*'}
-  } if (data.get('password') !== data.get('retypePassword')) {
-      return {error: '*passwords do not match*'}
-  } else {
-      addUser(submission)
+  const result = await addUser(submission)
 
-      return redirect('/login');
-    } 
+  if (result) {
+    return { error: `*${result}` }
+  }
+  return redirect()
 }

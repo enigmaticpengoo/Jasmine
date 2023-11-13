@@ -59,10 +59,7 @@ const Root = () => {
       <div className="navbar">
         {loginPopup && <div className="login-popup-box">
           <div className="login-popup-text">
-            To use this feature
-            <Link className="login-popup-link" to='signup' onClick={loginPopupHandler}>create an account</Link>
-            or
-            <Link className="login-popup-link" to='login' onClick={loginPopupHandler}>login</Link>
+            To use this feature <Link className="login-popup-link" to='signup' onClick={loginPopupHandler}>create an account</Link> or <Link className="login-popup-link" to='login' onClick={loginPopupHandler}>login</Link>
           </div>
           <img className="login-popup-clear" src='http://localhost:3000/login-clear.svg' onClick={loginPopupHandler} />
         </div>}
