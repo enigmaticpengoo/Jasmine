@@ -31,7 +31,6 @@ const Signup = () => {
     <div className="signup-container">
       {data && data.error && <p className="error">{data.error}</p>}
       <div className="container">
-        
         <Form className="form-box" method='post' action='/signup'>
           {selectedImage && (<div className="form-item">
             <div>Preview</div>
@@ -110,7 +109,7 @@ export const signupAction = async ({ request }) => {
   const result = await addUser(submission)
 
   if (result) {
-    return { error: `*${result}` }
+    return { error: `*${result}*` }
   }
   return redirect()
 }

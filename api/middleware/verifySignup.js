@@ -17,7 +17,7 @@ const verifySignup = async (req, res, next) => {
     }
     catch(err) {
       console.log(err)
-      res.send({ error: err })
+      res.status(400).send({ error: err })
       return
     }
   
@@ -25,8 +25,7 @@ const verifySignup = async (req, res, next) => {
       email: req.body.email
     }).then(async(user) => {  
       if (user) {
-        console.log('email already in use')
-        res.status(400).send({ message: "Failed! Email is already in use!" });
+        res.status(400).send({ error: "An account with that email already exists" });
         return;
       }
       
