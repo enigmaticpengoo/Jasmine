@@ -100,7 +100,6 @@ export const signupAction = async ({ request }) => {
       body: JSON.stringify(data)
     })
     .then(res => res.json())
-    .then(data => data.error)
     .catch(err => console.error('Error: ', err))
 
     return result
@@ -108,8 +107,9 @@ export const signupAction = async ({ request }) => {
 
   const result = await addUser(submission)
 
-  if (result) {
-    return { error: `*${result}*` }
+  if (result.error) {
+    return { error: `*${result.error}*` }
+  } else {
+    return redirect('/login')
   }
-  return redirect()
 }
