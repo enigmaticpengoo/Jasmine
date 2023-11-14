@@ -29,7 +29,7 @@ const Signup = () => {
 
   return (
     <div className="signup-container">
-      {data && data.error && <p className="error">{data.error}</p>}
+      {data && data.error && <p className="error signup-error">{data.error}</p>}
       <div className="container">
         <Form className="form-box" method='post' action='/signup'>
           {selectedImage && (<div className="form-item">

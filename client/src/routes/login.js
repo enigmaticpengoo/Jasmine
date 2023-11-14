@@ -3,33 +3,43 @@ import { Link, redirect, useOutletContext } from "react-router-dom";
 
 const Login = () => {  
   const [loggedIn, setLoggedIn] = useOutletContext()
+  const [ error, setError ] = useState()
   
   const login = async () => {
     const submission = {
       email: document.getElementById('email').value,
       password: document.getElementById('password').value
     }
-    console.log(submission)
+
     async function checkUser(data) {
-      const response = await fetch('http://127.0.0.1:3001/auth/login', {
+      const result = await fetch('http://127.0.0.1:3001/auth/login', {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
         },
         body: JSON.stringify(data)
       })
-      
-      const res = await response.json()
-  
-      document.cookie = 'accessToken=' + res.accessToken
-      const user = { userId: res.user.userId, user: res.user.user, profilepic: res.user.profilepic }
-      const localUser = JSON.stringify(user)
-      localStorage.setItem('user', localUser)
+        .then(res => res.json())
+        .catch(err => console.log(err))
+
+      return result
     }
     
-    await checkUser(submission)
-  
-    window.location.replace('/')
+    if (submission.email && submission.password) {
+      const result = await checkUser(submission)
+
+      if(result && result.error) {
+        setError(result.error)
+        return
+      } else {
+      document.cookie = 'accessToken=' + result.accessToken
+      const user = { userId: result.user.userId, user: result.user.user, profilepic: result.user.profilepic }
+      const localUser = JSON.stringify(user)
+      localStorage.setItem('user', localUser)
+      }
+
+      window.location.replace('/')
+    } return
   }
   
   const [hidePassword, setHidePassword] = useState(true)
@@ -48,7 +58,10 @@ const Login = () => {
   }
   
   return (
-    <div className="login-container container form-box">
+    <div className="login-container">
+      {error && <div className="error login-error">*{error}*</div>}
+    <div className="container form-box">
+      
       <div>
         <div className="form-item">
           <div>Email</div>
@@ -81,6 +94,7 @@ const Login = () => {
           Don't have an account? <Link to="/signup">Sign up</Link>
         </div>
       </div>
+    </div>
     </div>
   );
 };

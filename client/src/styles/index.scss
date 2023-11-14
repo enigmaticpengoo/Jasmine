@@ -94,7 +94,6 @@ top: 0;
 .error {
     font-size: 15px;
     color: rgb(214, 15, 15);
-    width: 245px;
 }
 
 // Post
@@ -578,8 +577,20 @@ border-bottom: 1px solid lightgray
     align-items: center;
 }
 
+.signup-error {
+    width: 245px;
+}
+
 .login-container {
     margin-top: 150px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-error {
+    width: 210px;
 }
 
 .form-item {

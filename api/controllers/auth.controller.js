@@ -43,32 +43,38 @@ const login = (req, res) => {
     email: req.body.email
   })
     .then((user) => {
-      const passwordIsValid = bcrypt.compareSync(
-        req.body.password,
-        user.password
-      );
+      if (user !== null) {
+        const passwordIsValid = bcrypt.compareSync(
+          req.body.password,
+          user.password
+        );
 
-      if (!passwordIsValid) {
-        return res.status(401).send({
-          accessToken: null,
-          message: "Invalid Password!"
-        });
+        if (!passwordIsValid) {
+          return res.status(401).send({
+            accessToken: null,
+            message: "Invalid Password!"
+          });
+        }
+  
+        const userId = { userId: user.userId }
+  
+        const accessToken = jwt.sign(userId, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '10m' })
+        const refreshToken = jwt.sign(userId, process.env.REFRESH_TOKEN_SECRET)
+  
+        const uploadRefreshToken = new RefreshToken({
+          value: refreshToken,
+          userId: user.userId
+        })
+        uploadRefreshToken.save()
+  
+        res.send({ accessToken: accessToken, user })
+      } else {
+        res.send({ error: 'No account with the given email and password exists'})
       }
+    })}
 
-      const userId = { userId: user.userId }
+      
 
-      const accessToken = jwt.sign(userId, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '10m' })
-      const refreshToken = jwt.sign(userId, process.env.REFRESH_TOKEN_SECRET)
-
-      const uploadRefreshToken = new RefreshToken({
-        value: refreshToken,
-        userId: user.userId
-      })
-      uploadRefreshToken.save()
-
-      res.send({ accessToken: accessToken, user })
-    });
-};
 
 async function checkRefreshToken(userId) {
   const refresh = await RefreshToken.findOne({ userId: userId }, 'value')
