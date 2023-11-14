@@ -240,11 +240,17 @@ top: 0;
     border-bottom: 1px solid lightgray;
 }
 
+.login-popup-container {
+    display: flex;
+    align-items: center;
+}
+
 .login-popup-box {
     position: absolute;
     border-radius: 10px;
     top: 2%;
-    right: 30%;
+    left: 50%;
+    transform: translateX(-50%);
     width: 500px;
     height: 35px;
     display: flex;

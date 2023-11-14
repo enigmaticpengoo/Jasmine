@@ -63,6 +63,7 @@ app.get('/user/:follower/:following', async (req, res) => {
 })
 
 app.post('/user/:follower/:following', async (req, res) => {
+    console.log( req.params )
     const followerUser = await User.findOne({ userId: req.params.follower })
     const followingUser = await User.findOne({ userId: req.params.following })
 

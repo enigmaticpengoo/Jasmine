@@ -6,7 +6,7 @@ import { useOutletContext } from "react-router-dom";
 const API_BASE = 'http://localhost:3001'
 
 const Profile = () => {
-  const [loggedIn, setLoggedIn] = useOutletContext()
+  const [[loggedIn, setLoggedIn], [loginPopup, setLoginPopup]] = useOutletContext()
   
   const [user, setUser] = useState([])
   const [follow, setFollow] = useState([])
@@ -103,7 +103,7 @@ const Profile = () => {
             <div className="follow-box">
               <a href="#" className="follow-box-item" onClick={followingHandler}>Following: {user.following}</a>
               <a href="#" className="follow-box-item" onClick={followersHandler}>Followers: {user.followers}</a>
-              { follow
+              { loggedIn && follow
               ?
               <button className="follow-box-item button follow-button" onClick={unfollowHandler}>
                 Unfollow

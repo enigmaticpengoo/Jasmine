@@ -4,7 +4,7 @@ import { Link, useOutletContext } from "react-router-dom";
 const API_BASE = 'http://127.0.0.1:3001'
 
 const Followingfeed = () => {
-    const [loggedIn, setLoggedIn] = useOutletContext()
+    const [[loggedIn, setLoggedIn], [loginPopup, setLoginPopup]] = useOutletContext()
     const [posts, setPosts] = useState([])
 
   useEffect(() => {

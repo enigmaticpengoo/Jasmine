@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, redirect, useOutletContext } from "react-router-dom";
 
 const Login = () => {  
-  const [loggedIn, setLoggedIn] = useOutletContext()
+  const [[loggedIn, setLoggedIn], [ loginPopup, setLoginPopup ]] = useOutletContext()
   const [ error, setError ] = useState()
   
   const login = async () => {
@@ -35,6 +35,7 @@ const Login = () => {
       document.cookie = 'accessToken=' + result.accessToken
       const user = { userId: result.user.userId, user: result.user.user, profilepic: result.user.profilepic }
       const localUser = JSON.stringify(user)
+      setLoggedIn(user)
       localStorage.setItem('user', localUser)
       }
 
