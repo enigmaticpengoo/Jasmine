@@ -110,6 +110,6 @@ export const signupAction = async ({ request }) => {
   if (result.error) {
     return { error: `*${result.error}*` }
   } else {
-    return redirect('/uploadphoto')
+    return redirect('/signup/uploadphoto/' + result.userId)
   }
 }

@@ -34,7 +34,7 @@ const router = createBrowserRouter([
         action: signupAction,
       },
       {
-        path: "/signup/uploadphoto",
+        path: "/signup/uploadphoto/:id",
         element: <Uploadphoto />,
         action: uploadPhotoAction
       }

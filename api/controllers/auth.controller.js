@@ -32,7 +32,7 @@ const signup = async (req, res) => {
 
     user.save();
 
-    res.json({ error: null })
+    res.json({ userId: userId, error: null })
   } else {
     throw new Error('Something went wrong! Please try again.')
   }

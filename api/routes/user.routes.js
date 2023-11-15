@@ -64,6 +64,14 @@ app.get('/user/:follower/:following', async (req, res) => {
         }
 })
 
+app.post('/user/uploadphoto/:id', upload.single('profilepic'), async (req, res) => {
+    console.log(req.file, req.params.id)
+
+    await User.findOneAndUpdate({ userId: req.params.id }, { profilepic: `http://127.0.0.1:3000/uploads/${req.file.filename}` })
+    
+    res.send('photo uploaded')
+})
+
 app.post('/user/:follower/:following', async (req, res) => {
     console.log( req.params )
     const followerUser = await User.findOne({ userId: req.params.follower })
@@ -84,12 +92,6 @@ app.post('/user/:follower/:following', async (req, res) => {
     await User.updateOne({ userId: req.params.following }, { $inc: { followers: 1 }})   
 
     res.json(follow)
-})
-
-app.post('/user/uploadphoto', upload.single('profilepic'), (req, res) => {
-    console.log(req.file, req.body)
-    
-    res.send('photo uploaded')
 })
 
 app.delete('/user/:follower/:following', async (req, res) => {
