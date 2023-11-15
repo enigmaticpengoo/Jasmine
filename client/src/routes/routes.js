@@ -5,6 +5,7 @@ import Root from "./root.js";
 import Login from "./login.js";
 import Signup, { signupAction } from "./signup.js";
 import Post from "./post.js";
+import Uploadphoto, { uploadPhotoAction } from "./uploadphoto.js";
 
 const router = createBrowserRouter([
   {
@@ -30,8 +31,13 @@ const router = createBrowserRouter([
       {
         path: "/signup",
         element: <Signup />,
-        action: signupAction
+        action: signupAction,
       },
+      {
+        path: "/signup/uploadphoto",
+        element: <Uploadphoto />,
+        action: uploadPhotoAction
+      }
     ],
   },
   

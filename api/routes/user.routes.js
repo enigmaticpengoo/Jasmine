@@ -2,6 +2,8 @@ const Follow = require('../models/follow');
 const RefreshToken = require('../models/refreshTokens');
 const User = require('../models/user')
 const uid = require('uid-safe')
+const multer = require('multer')
+const upload = multer({ dest: './public/uploads/' })
 
 module.exports = function(app) {
     app.use(function(req, res, next) {
@@ -84,6 +86,11 @@ app.post('/user/:follower/:following', async (req, res) => {
     res.json(follow)
 })
 
+app.post('/user/uploadphoto', upload.single('profilepic'), (req, res) => {
+    console.log(req.file, req.body)
+    
+    res.send('photo uploaded')
+})
 
 app.delete('/user/:follower/:following', async (req, res) => {
     const unfollow = await Follow.findOneAndDelete({

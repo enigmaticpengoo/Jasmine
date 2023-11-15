@@ -79,9 +79,11 @@ const Profile = () => {
   }
 
   const uploadPhoto = (photoType) => {
-    const photo = photoType
-
-    
+    if (photoType === 'profilepic') {
+      console.log('profilepic')
+    } else {
+      console.log('coverphoto')
+    }    
   }
 
   return (
