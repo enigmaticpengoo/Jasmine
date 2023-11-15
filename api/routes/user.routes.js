@@ -65,8 +65,6 @@ app.get('/user/:follower/:following', async (req, res) => {
 })
 
 app.post('/user/uploadphoto/:id', upload.single('profilepic'), async (req, res) => {
-    console.log(req.file, req.params.id)
-
     await User.findOneAndUpdate({ userId: req.params.id }, { profilepic: `http://127.0.0.1:3000/uploads/${req.file.filename}` })
     
     res.send('photo uploaded')

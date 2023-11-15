@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Postbox from "../components/postbox.js";
 import Profilefeed from "../components/profilefeed.js";
 import { useOutletContext } from "react-router-dom";
@@ -10,6 +10,9 @@ const Profile = () => {
   
   const [user, setUser] = useState([])
   const [follow, setFollow] = useState([])
+
+  const profilepicRef = useRef(null)
+  const coverphotoRef = useRef(null)
 
   useEffect(() => {
     GetFollow()
@@ -81,8 +84,10 @@ const Profile = () => {
   const uploadPhoto = (photoType) => {
     if (photoType === 'profilepic') {
       console.log('profilepic')
+      profilepicRef.current.click()
     } else {
       console.log('coverphoto')
+      coverphotoRef.current.click()
     }    
   }
 
@@ -94,10 +99,12 @@ const Profile = () => {
             <div className="coverphoto-box" onClick={() => uploadPhoto('coverphoto')}>
               <img className="coverphoto" src={ user.coverphoto } />
               <img className='coverphoto-camera' src='camera.png' />
+              <input type='file' ref={coverphotoRef} style={{ display: 'none' }}></input>
             </div>
             <div className="profilepic-box" onClick={() => uploadPhoto('profilepic')}>
               <img className="profilepic" src={ user.profilepic } />
               <img className='profilepic-camera' src='camera.png' />
+              <input type='file' ref={profilepicRef} style={{ display: 'none' }}></input>
             </div>
           </div>
           <div className="flex-container">

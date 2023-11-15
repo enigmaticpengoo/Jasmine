@@ -16,8 +16,6 @@ export default Uploadphoto
 export const uploadPhotoAction = async ({ params, request }) => {
     const data = await request.formData()
 
-    console.log(params.id)
-
     async function uploadPhoto(data, params) {
         const result = await fetch('http://127.0.0.1:3001/user/uploadphoto/' + params.id, {
           method: "POST",
