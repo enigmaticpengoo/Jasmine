@@ -490,6 +490,12 @@ border-bottom: 1px solid lightgray
     }
 }
 
+.coverphoto-box-nohover {
+    position: relative;
+    height: 250px; 
+    width: 562px;
+}
+
 .coverphoto {
     height: 250px; 
     width: 562px;
@@ -523,6 +529,15 @@ border-bottom: 1px solid lightgray
     &:hover > .profilepic-camera {
         opacity: 60%;
     }
+}
+
+.profilepic-box-nohover {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 106px; 
+    width: 106px;
+    background: rgb(0, 0, 0, 0.0);
 }
 
 .profilepic {
@@ -600,12 +615,12 @@ border-bottom: 1px solid lightgray
 }
 
 .form-item {
-    padding: 5px 0px;
+    margin: 8px 0px;
     font-size: 20px;
 }
 
 .form-item-small {
-    padding: 5px 0px;
+    margin: 9px 0px;
     font-size: 15px;
 }
 
@@ -652,4 +667,22 @@ border-bottom: 1px solid lightgray
     margin-bottom: -5px;
     width: 70px;
     border-radius: 50%;
+}
+
+// Upload Photo
+.uploadphoto-container {
+    height: 60vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.uploadphoto-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.uploadphoto-item {
+    margin: 10px 0px;
 }

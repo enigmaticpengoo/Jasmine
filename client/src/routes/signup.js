@@ -7,7 +7,6 @@ const Signup = () => {
   const data = useActionData()
   const [hidePassword, setHidePassword] = useState(true)
   const [hideRetypePassword, setHideRetypePassword] = useState(true)
-  const [selectedImage, setSelectedImage] = useState()
 
   const hideHandler = (id) => {
     let inputField = document.getElementById(id)
@@ -32,14 +31,6 @@ const Signup = () => {
       {data && data.error && <p className="error signup-error">{data.error}</p>}
       <div className="container">
         <Form className="form-box" method='post' action='/signup'>
-          {selectedImage && (<div className="form-item">
-            <div>Preview</div>
-            <img className="preview-profilepic" src={URL.createObjectURL(selectedImage)} />
-          </div>)}
-          <div className="form-item">
-            <div>Choose a profile picture...</div>
-            <input type='file' accept='.jpg, .png' name='profilePicture' onChange={(e) => setSelectedImage(e.target.files[0])}></input>
-          </div>
           <div className="form-item">
           <div>First Name</div>
             <input className="form-input input-border" name="firstName"></input>

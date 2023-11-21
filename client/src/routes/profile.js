@@ -91,27 +91,44 @@ const Profile = () => {
     }    
   }
 
+  const handlePhotoChange = (event) => {
+    const file = event.target.file[0]
+    console.log(file)
+  }
+
   return (
     <div className="container">
       <div className="profile-page">
         <div className="profile-box">
           <div className="pictures">
+            { loggedIn && loggedIn.userId === window.location.pathname.split('/')[1]
+            ?
             <div className="coverphoto-box" onClick={() => uploadPhoto('coverphoto')}>
               <img className="coverphoto" src={ user.coverphoto } />
               <img className='coverphoto-camera' src='camera.png' />
-              <input type='file' ref={coverphotoRef} style={{ display: 'none' }}></input>
+              <input type='file' ref={coverphotoRef} style={{ display: 'none' }} onChange={handlePhotoChange}></input>
             </div>
+            :
+            <div className="coverphoto-box-nohover">
+              <img className="coverphoto" src={ user.coverphoto } />
+            </div>}
+            { loggedIn && loggedIn.userId === window.location.pathname.split('/')[1]
+            ?
             <div className="profilepic-box" onClick={() => uploadPhoto('profilepic')}>
               <img className="profilepic" src={ user.profilepic } />
               <img className='profilepic-camera' src='camera.png' />
-              <input type='file' ref={profilepicRef} style={{ display: 'none' }}></input>
+              <input type='file' ref={profilepicRef} style={{ display: 'none' }} onChange={handlePhotoChange}></input>
             </div>
+            :
+            <div className="profilepic-box-nohover">
+              <img className="profilepic" src={ user.profilepic } />
+            </div>}
           </div>
           <div className="flex-container">
             <div className="profile-name">{ user.user }</div>
             <div className="follow-box">
-              <a href="#" className="follow-box-item" onClick={followingHandler}>Following: {user.following}</a>
-              <a href="#" className="follow-box-item" onClick={followersHandler}>Followers: {user.followers}</a>
+              <div className="follow-box-item" onClick={followingHandler}>Following: {user.following}</div>
+              <div className="follow-box-item" onClick={followersHandler}>Followers: {user.followers}</div>
               { loggedIn && follow
               ?
               <button className="follow-box-item button follow-button" onClick={unfollowHandler}>
@@ -125,7 +142,7 @@ const Profile = () => {
             </div>
           </div>
         </div>
-        <Postbox />
+        { loggedIn && loggedIn.userId === window.location.pathname.split('/')[1] && <Postbox />}
         <Profilefeed />
       </div>
     </div>

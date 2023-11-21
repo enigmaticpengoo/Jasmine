@@ -89,8 +89,6 @@ const Login = () => {
           </div>
         </div>
         <button className="button form-button" type='submit' onClick={login}>Login</button>
-        <div className="form-item-small">Login Using Google</div>
-        <div className="form-item-small">Forgot password? Click here.</div>
         <div className="form-item-small">
           Don't have an account? <Link to="/signup">Sign up</Link>
         </div>

@@ -1,13 +1,19 @@
-import { Form, useOutletContext, useParams } from "react-router-dom"
+import { useState } from "react"
+import { Form, redirect, useOutletContext } from "react-router-dom"
 
 const Uploadphoto = () => {
     const [[loggedIn, setLoggedIn], [loginPopup, setLoginPopup]] = useOutletContext()
-  
+
+    const [selectedImage, setSelectedImage] = useState(false)
+
     return (
-    <Form method='post' action={`/signup/uploadphoto/${window.location.pathname.split('/')[3]}`} encType='multipart/form-data'>
-        <input type='file' name='profilepic'></input>
-        <button className='button form-button' type='submit'>Upload</button>
-    </Form>
+    <div className='uploadphoto-container'>
+      <Form className='uploadphoto-box' method='post' action={`/signup/uploadphoto/${window.location.pathname.split('/')[3]}`} encType='multipart/form-data'>
+          {selectedImage && <img className="preview-profilepic uploadphoto-item" src={URL.createObjectURL(selectedImage)} />}
+          <input className='uploadphoto-item' accept='.jpg, .png' type='file' name='profilepic' onChange={(e) => setSelectedImage(e.target.files[0])}></input>
+          <button className='button form-button uploadphoto-item' type='submit'>Upload</button>
+      </Form>
+    </div>
   )
 }
 
@@ -27,5 +33,5 @@ export const uploadPhotoAction = async ({ params, request }) => {
 
     const result = await uploadPhoto(data, params)
 
-    return result
+    return redirect('/login')
 }
