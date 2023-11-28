@@ -19,7 +19,7 @@ const Uploadphoto = () => {
 
 export default Uploadphoto
 
-export const uploadPhotoAction = async ({ params, request }) => {
+export const uploadPhotoSignupAction = async ({ params, request }) => {
     const data = await request.formData()
 
     async function uploadPhoto(data, params) {

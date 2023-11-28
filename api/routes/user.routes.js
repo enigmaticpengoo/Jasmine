@@ -66,13 +66,10 @@ app.get('/user/:follower/:following', async (req, res) => {
 })
 
 app.post('/user/uploadphoto/:phototype/:id', upload.single('profilepic'), async (req, res) => {
-    console.log(req.params.id, req.params.phototype, req.file.filename)
-
-    fs.copyFile(`./temp/${req.file.filename}`, `../client/public/uploads/${req.params.id}/profilepic`, (err) => {
+    fs.copyFile(`./temp/${req.file.filename}`, `../client/public/uploads/${req.params.id}/${req.params.phototype}`, (err) => {
         if (err) throw err;
-        console.log('source.txt was copied to destination.txt');
-    });
-       
+    }) 
+
     res.send('photo uploaded')
 })
 

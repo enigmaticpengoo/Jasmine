@@ -5,7 +5,8 @@ import Root from "./root.js";
 import Login from "./login.js";
 import Signup, { signupAction } from "./signup.js";
 import Post from "./post.js";
-import Uploadphoto, { uploadPhotoAction } from "./uploadphoto.js";
+import Uploadphoto, { uploadPhotoSignupAction } from "./uploadphoto.js";
+import { uploadPhotoAction } from "../components/uploadphoto.js";
 
 const router = createBrowserRouter([
   {
@@ -36,6 +37,10 @@ const router = createBrowserRouter([
       {
         path: "/signup/uploadphoto/:phototype/:id",
         element: <Uploadphoto />,
+        action: uploadPhotoSignupAction
+      },
+      {
+        path:'/uploadphoto/:phototype/:id',
         action: uploadPhotoAction
       }
     ],

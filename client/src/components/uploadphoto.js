@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { Form } from "react-router-dom"
+import { Form, redirect } from "react-router-dom"
 
 const Uploadphoto = ({ imageType, userId }) => {
 
@@ -7,7 +7,7 @@ const Uploadphoto = ({ imageType, userId }) => {
 
     return (
     <div className='uploadphoto-container'>
-      <Form className='uploadphoto-box' method='post' action={`/signup/uploadphoto/${imageType}/${userId}`} encType='multipart/form-data'>
+      <Form className='uploadphoto-box' method='post' action={`/uploadphoto/${imageType}/${userId}`} encType='multipart/form-data'>
           {selectedImage && <img className="preview-profilepic uploadphoto-item" src={URL.createObjectURL(selectedImage)} />}
           <input className='uploadphoto-item' accept='.jpg, .png' type='file' name='profilepic' onChange={(e) => setSelectedImage(e.target.files[0])}></input>
           <button className='button form-button uploadphoto-item' type='submit'>Upload</button>
@@ -30,7 +30,7 @@ export const uploadPhotoAction = async ({ params, request }) => {
         return result
     }
 
-    const result = await uploadPhoto(data, params)
+    await uploadPhoto(data, params)
 
-    return result
+    return redirect(`/${params.id}`)
 }

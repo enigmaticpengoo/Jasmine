@@ -123,12 +123,12 @@ const Profile = () => {
             { loggedIn && loggedIn.userId === window.location.pathname.split('/')[1]
             ?
             <div className="coverphoto-box" onClick={() => uploadPhoto('coverphoto')}>
-              <img className="coverphoto" src={ user.coverphoto } />
+              <img className="coverphoto" src={`http://127.0.0.1:3000/uploads/${user.userId}/coverphoto`} />
               <img className='coverphoto-camera' src='camera.png' />
             </div>
             :
             <div className="coverphoto-box-nohover">
-              <img className="coverphoto" src={ user.coverphoto } />
+              <img className="coverphoto" src={`http://127.0.0.1:3000/uploads/${user.userId}/coverphoto`} />
             </div>}
             { loggedIn && loggedIn.userId === window.location.pathname.split('/')[1]
             ?
