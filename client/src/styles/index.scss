@@ -719,3 +719,12 @@ border-bottom: 1px solid lightgray
     content: ' ';
     background: rgba(0,0,0,.9);
   }
+
+  .uploadphoto-clear {
+    cursor: pointer;
+    width: 20px;
+    position: absolute;
+    top: 6%;
+    right: 6%;
+    padding: 2px;
+  }

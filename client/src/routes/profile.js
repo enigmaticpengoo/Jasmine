@@ -112,6 +112,7 @@ const Profile = () => {
         <div className="uploadphoto-popup-container">
           <div className="uploadphoto-popup-outer" id='uploadphoto-popup-outer' onClick={handlePopup}></div>
           <div className="uploadphoto-popup-box" id='uploadphoto-popup-box'>
+            <img className='uploadphoto-clear' src='clear.svg' onClick={handlePopup} />
             <Uploadphoto imageType={imageType} userId={loggedIn.userId} />
           </div>
         </div>
