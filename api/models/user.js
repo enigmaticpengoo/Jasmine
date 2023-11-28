@@ -18,8 +18,7 @@ const userSchema = new mongoose.Schema({
         required: true
     },
     profilepic: {
-        type: String,
-        default: "http://127.0.0.1:3000/profilepic.png"
+        type: String
     },
     coverphoto: String,
     bio: String,

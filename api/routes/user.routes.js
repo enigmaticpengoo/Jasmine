@@ -3,7 +3,8 @@ const RefreshToken = require('../models/refreshTokens');
 const User = require('../models/user')
 const uid = require('uid-safe')
 const multer = require('multer')
-const upload = multer({ dest: './public/uploads/' })
+const upload = multer({ dest: './temp' })
+const fs = require('fs')
 
 module.exports = function(app) {
     app.use(function(req, res, next) {
@@ -64,14 +65,18 @@ app.get('/user/:follower/:following', async (req, res) => {
         }
 })
 
-app.post('/user/uploadphoto/:id', upload.single('profilepic'), async (req, res) => {
-    await User.findOneAndUpdate({ userId: req.params.id }, { profilepic: `http://127.0.0.1:3000/uploads/${req.file.filename}` })
-    
+app.post('/user/uploadphoto/:phototype/:id', upload.single('profilepic'), async (req, res) => {
+    console.log(req.params.id, req.params.phototype, req.file.filename)
+
+    fs.copyFile(`./temp/${req.file.filename}`, `../client/public/uploads/${req.params.id}/profilepic`, (err) => {
+        if (err) throw err;
+        console.log('source.txt was copied to destination.txt');
+    });
+       
     res.send('photo uploaded')
 })
 
 app.post('/user/:follower/:following', async (req, res) => {
-    console.log( req.params )
     const followerUser = await User.findOne({ userId: req.params.follower })
     const followingUser = await User.findOne({ userId: req.params.following })
 

@@ -6,6 +6,7 @@ const express = require('express')
 const app = express()
 require('dotenv')
 const uid = require('uid-safe')
+const fs = require('fs')
 
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
@@ -27,10 +28,19 @@ const signup = async (req, res) => {
       userId: userId,
       user: req.body.user,
       email: req.body.email,
-      password: bcrypt.hashSync(req.body.password)
-    });
+      password: bcrypt.hashSync(req.body.password),
+      profilepic: `http://127.0.0.1:3000/uploads/${userId}/profilepic`
+    })
 
-    user.save();
+    user.save()
+
+    fs.mkdir(`../client/public/uploads/${userId}`, { rescursive: true }, (err) => {
+      if (err) throw err
+    })
+
+    fs.copyFile(`../client/public/profilepic.png`, `../client/public/uploads/${userId}/profilepic`, (err) => {
+      if (err) throw err
+    })
 
     res.json({ userId: userId, error: null })
   } else {

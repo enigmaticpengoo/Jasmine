@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import Postbox from "../components/postbox.js";
 import Profilefeed from "../components/profilefeed.js";
-import { useOutletContext } from "react-router-dom";
+import { Link, useOutletContext } from "react-router-dom";
+import Uploadphoto from "../components/uploadphoto.js";
 
 const API_BASE = 'http://localhost:3001'
 
@@ -10,6 +11,8 @@ const Profile = () => {
   
   const [user, setUser] = useState([])
   const [follow, setFollow] = useState([])
+  const [popup, setPopup] = useState(false)
+  const [imageType, setImageType] = useState(false)
 
   const profilepicRef = useRef(null)
   const coverphotoRef = useRef(null)
@@ -81,33 +84,31 @@ const Profile = () => {
     }
   }
 
-  const uploadPhoto = (photoType) => {
-    if (photoType === 'profilepic') {
-      console.log('profilepic')
-      profilepicRef.current.click()
-    } else {
-      console.log('coverphoto')
-      coverphotoRef.current.click()
-    }    
-  }
-
-  const handlePhotoChange = (event) => {
-    const file = event.target.file[0]
-    console.log(file)
+  const uploadPhoto = (type) => {
+    setImageType(type)
+    setPopup(true)
   }
 
   return (
     <div className="container">
+      { popup && 
+      <div className="uploadphoto-popup-container">
+          <div className="uploadphoto-popup-outer"></div>
+          <div className="uploadphoto-popup-box">
+            <Uploadphoto imageType={imageType} userId={loggedIn.userId} />
+          </div>
+      </div> }
       <div className="profile-page">
         <div className="profile-box">
           <div className="pictures">
             { loggedIn && loggedIn.userId === window.location.pathname.split('/')[1]
             ?
-            <div className="coverphoto-box" onClick={() => uploadPhoto('coverphoto')}>
-              <img className="coverphoto" src={ user.coverphoto } />
-              <img className='coverphoto-camera' src='camera.png' />
-              <input type='file' ref={coverphotoRef} style={{ display: 'none' }} onChange={handlePhotoChange}></input>
-            </div>
+            <Link to={`/signup/uploadphoto/coverphoto${window.location.pathname}`}>
+              <div className="coverphoto-box">
+                <img className="coverphoto" src={ user.coverphoto } />
+                <img className='coverphoto-camera' src='camera.png' />
+              </div>
+            </Link>
             :
             <div className="coverphoto-box-nohover">
               <img className="coverphoto" src={ user.coverphoto } />
@@ -117,7 +118,6 @@ const Profile = () => {
             <div className="profilepic-box" onClick={() => uploadPhoto('profilepic')}>
               <img className="profilepic" src={ user.profilepic } />
               <img className='profilepic-camera' src='camera.png' />
-              <input type='file' ref={profilepicRef} style={{ display: 'none' }} onChange={handlePhotoChange}></input>
             </div>
             :
             <div className="profilepic-box-nohover">
