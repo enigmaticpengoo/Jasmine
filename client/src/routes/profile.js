@@ -18,6 +18,23 @@ const Profile = () => {
   const coverphotoRef = useRef(null)
 
   useEffect(() => {
+    let userPopup = document.getElementById('uploadphoto-popup-box')
+    let popupCloser = document.getElementById('uploadphoto-popup-outer')
+    let visibility
+    popup ? visibility = 'visible' : visibility = 'hidden'
+
+    if (userPopup) {
+      userPopup.style.visibility = visibility
+      popupCloser.style.visibility = visibility
+    }
+    
+  }, [popup])
+
+  const handlePopup = () => {
+    setPopup(!popup)
+  }
+
+  useEffect(() => {
     GetFollow()
   }, [])
 
@@ -86,29 +103,28 @@ const Profile = () => {
 
   const uploadPhoto = (type) => {
     setImageType(type)
-    setPopup(true)
+    setPopup(!popup)
   }
 
   return (
     <div className="container">
       { popup && 
-      <div className="uploadphoto-popup-container">
-          <div className="uploadphoto-popup-outer"></div>
-          <div className="uploadphoto-popup-box">
+        <div className="uploadphoto-popup-container">
+          <div className="uploadphoto-popup-outer" id='uploadphoto-popup-outer' onClick={handlePopup}></div>
+          <div className="uploadphoto-popup-box" id='uploadphoto-popup-box'>
             <Uploadphoto imageType={imageType} userId={loggedIn.userId} />
           </div>
-      </div> }
+        </div>
+      }
       <div className="profile-page">
         <div className="profile-box">
           <div className="pictures">
             { loggedIn && loggedIn.userId === window.location.pathname.split('/')[1]
             ?
-            <Link to={`/signup/uploadphoto/coverphoto${window.location.pathname}`}>
-              <div className="coverphoto-box">
-                <img className="coverphoto" src={ user.coverphoto } />
-                <img className='coverphoto-camera' src='camera.png' />
-              </div>
-            </Link>
+            <div className="coverphoto-box" onClick={() => uploadPhoto('coverphoto')}>
+              <img className="coverphoto" src={ user.coverphoto } />
+              <img className='coverphoto-camera' src='camera.png' />
+            </div>
             :
             <div className="coverphoto-box-nohover">
               <img className="coverphoto" src={ user.coverphoto } />
