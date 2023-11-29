@@ -3,6 +3,7 @@ import { Link } from "react-router-dom"
 
 const Post = () => {
     const [post, setPost] = useState([])
+    const [liked, setLiked] = useState(false)
 
     async function getPost() {
         await fetch('http://127.0.0.1:3001' + window.location.pathname)
@@ -14,7 +15,12 @@ const Post = () => {
     useEffect(() => {
         getPost()
     }, [])
-    
+
+    const likedHandler = () => {
+        // Go to api and set liked on liked doc
+        
+        setLiked(!liked)
+    }
 
     return (
         <>
@@ -30,6 +36,14 @@ const Post = () => {
                     </div>
                     <div className="content-box">
                         { post.content }
+                    </div>
+                    <div className="post-util-bar">
+                        { liked
+                        ?
+                        <img className='post-util-item' src='/heart-fill.svg' onClick={likedHandler} />
+                        :
+                        <img className='post-util-item' src='/heart.svg' onClick={likedHandler} /> }
+                        <img className='post-util-item' src='/comment.svg' />
                     </div>
                 </div>
             </div>
