@@ -30,6 +30,7 @@ const postSchema = new mongoose.Schema({
         type: Number,
         default: 0
     },
+    liked: Boolean
 })
 
 const Post = mongoose.model('Post', postSchema)

@@ -8,14 +8,6 @@ const likeSchema = new mongoose.Schema({
     userId: {
         type: String,
         required: true
-    },
-    user: {
-        type: String,
-        required: true
-    },
-    profilepic: {
-        type: String,
-        required: true
     }
 })
 

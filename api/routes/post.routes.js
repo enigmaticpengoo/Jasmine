@@ -3,6 +3,7 @@ const Post = require('../models/post')
 const cookie = require('cookie');
 const User = require('../models/user');
 const Follow = require('../models/follow');
+const Like = require('../models/like');
 
 module.exports = function(app) {
     app.use(function(req, res, next) {
@@ -10,10 +11,20 @@ module.exports = function(app) {
       next();
     });
 
-app.get('/posts', async (req, res) => {
-    const posts = await Post.find().sort({ timestamp: -1 })
-    
-    res.json(posts)
+app.get('/posts/feed/:userid', async (req, res) => {
+    const postSet = await Post.find().sort({ timestamp: -1 })
+
+    for (const post of postSet) {
+        const likeDoc = await Like.findOne({ postId: post.id, userId: req.params.userid })
+ 
+        if (likeDoc) {
+            post.liked = true
+        } else {
+            post.liked = false
+        }
+    }
+
+    res.json(postSet)
 })
 
 app.get('/posts/:id', async (req, res) => {
@@ -54,6 +65,16 @@ app.post('/posts', authenticateToken, async (req, res) => {
     res.json(post)
 })
 
+app.post('/like', authenticateToken, (req, res) => {
+    
+    
+    const like = new Like({ postId: req.body.postId, userId: req.body.userId })
+    
+    like.save()
+
+    res.send('posted')
+})
+
 app.put('/post/:id', async (req, res) => {
     const posts = await Post.findOne({ _id: req.params.id })
     
@@ -64,5 +85,11 @@ app.delete('/post/:id', async (req, res) => {
     const posts = await Post.findOne({ _id: req.params.id })
     
     res.send('Delete Post' + req.params.id)
+})
+
+app.delete('/like', authenticateToken, async (req, res) => {
+    const deleted = await Like.findOneAndDelete({ postId: req.body.postId, userId: req.body.userId })
+    
+    res.send('deleted')
 })
 }
