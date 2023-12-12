@@ -19,8 +19,8 @@ const postSchema = new mongoose.Schema({
         default: 'http://localhost:3000/profilepic.png'
     },
     timestamp: {
-        type: Date,
-        default: Date.now
+        type: Number,
+        default: Date.now()
     },
     likes: {
         type: Number,

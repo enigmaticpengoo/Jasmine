@@ -155,12 +155,76 @@ top: 0;
     font-size: 14px;
 }
 
+.post-bottom-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0px 2px;
+}
+
 .post-util-bar {
     display: flex;
+    align-items: center;
 }
 
 .post-util-item {
     margin: 10px 20px 4px 5px;
+}
+
+.posted-time {
+    font-size: 15px;
+    color: rgb(165, 165, 165);
+}
+
+.post-top-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.post-dot-menu {
+    width: 22px;
+    margin: 8px 0px;
+    padding: 0px 1px;
+    &:hover {
+        background-color: rgb(0, 0, 0, 0.1);
+        border-radius: 50%;
+        cursor: pointer;
+    }
+}
+
+.dot-menu-container {
+    position: relative;
+}
+
+.post-popup-container {
+    position: absolute;
+    top: 30px;
+    left: 20px;
+    visibility: hidden;
+}
+
+.post-popup-box {
+    border: 1px solid darkgray;
+    border-radius: 5px;
+}
+
+.post-popup-close {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color:rgb(0, 0, 0, 0.0)
+}
+
+.post-popup-item {
+    color: rgb(224, 55, 55);
+    padding: 5px 7px;
+    border-radius: 5px;
+    &:hover {
+        background-color: rgb(236, 196, 196);
+        cursor: pointer;
+    }
 }
 
 // Feed Selector
@@ -222,6 +286,7 @@ top: 0;
     font-size: 18px;
     resize: none;
     padding: 5px;
+    margin: 1px 0px;
     white-space: pre-wrap;
 }
 

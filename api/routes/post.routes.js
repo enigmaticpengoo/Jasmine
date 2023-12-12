@@ -14,13 +14,15 @@ module.exports = function(app) {
 app.get('/posts/feed/:userid', async (req, res) => {
     const postSet = await Post.find().sort({ timestamp: -1 })
 
-    for (const post of postSet) {
-        const likeDoc = await Like.findOne({ postId: post.id, userId: req.params.userid })
- 
-        if (likeDoc) {
-            post.liked = true
-        } else {
-            post.liked = false
+    if (req.params.userid) {
+        for (const post of postSet) {
+            const likeDoc = await Like.findOne({ postId: post.id, userId: req.params.userid })
+    
+            if (likeDoc) {
+                post.liked = true
+            } else {
+                post.liked = false
+            }
         }
     }
 
@@ -57,7 +59,8 @@ app.post('/posts', authenticateToken, async (req, res) => {
         content: req.body.content,
         userId: user.userId,
         user: user.user,
-        profilepic: user.profilepic
+        profilepic: user.profilepic,
+        timestamp: Date.now()
     })
 
     post.save()
@@ -65,12 +68,16 @@ app.post('/posts', authenticateToken, async (req, res) => {
     res.json(post)
 })
 
-app.post('/like', authenticateToken, (req, res) => {
-    
-    
+app.post('/like', authenticateToken, async (req, res) => {
     const like = new Like({ postId: req.body.postId, userId: req.body.userId })
     
     like.save()
+
+    const likeCounter = await Post.findOne({ _id: req.body.postId })
+
+    likeCounter.$inc('likes', 1)
+
+    await likeCounter.save()
 
     res.send('posted')
 })
@@ -81,14 +88,20 @@ app.put('/post/:id', async (req, res) => {
     res.send('Edit Post' + req.params.id)
 })
 
-app.delete('/post/:id', async (req, res) => {
-    const posts = await Post.findOne({ _id: req.params.id })
+app.delete('/post/:id', authenticateToken, async (req, res) => {
+    await Post.findOneAndDelete({ _id: req.params.id })
     
-    res.send('Delete Post' + req.params.id)
+    res.send('Delete Post')
 })
 
 app.delete('/like', authenticateToken, async (req, res) => {
     const deleted = await Like.findOneAndDelete({ postId: req.body.postId, userId: req.body.userId })
+
+    const likeCounter = await Post.findOne({ _id: req.body.postId })
+
+    likeCounter.$inc('likes', -1)
+
+    await likeCounter.save()
     
     res.send('deleted')
 })
