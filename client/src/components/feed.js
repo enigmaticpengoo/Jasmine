@@ -1,18 +1,19 @@
 import { useEffect, useState } from "react";
 import { Link, useOutletContext } from "react-router-dom";
+import Comment from "./comment";
 
 const API_BASE = 'http://127.0.0.1:3001'
 
-const Feed = () => {
+const Feed = ({ feedType }) => {
   const [[ loggedIn, setLoggedIn ] , [ loginPopup, setLoginPopup ]] = useOutletContext()
   
   const [ posts, setPosts ] = useState([])
   const [ liked, setLiked ] = useState(new Map())
 
   useEffect(() => {
-    const res = GetPosts().then(res => {
+    GetPosts().then(res => {
       setPosts(res)
-
+      
       const likedPosts = new Map(res.map(post => [ post._id, post.liked ]))
 
       setLiked(likedPosts)
@@ -20,9 +21,29 @@ const Feed = () => {
   }, [])
 
   async function GetPosts() {
-    return await fetch(API_BASE + '/posts/feed/' + (loggedIn ? loggedIn.userId : null))
-    .then(res => res.json())
-    .catch(err => console.error('Error: ', err))
+    if (feedType === 'regular') {
+      return await fetch(API_BASE + '/posts/feed/' + (loggedIn ? loggedIn.userId : null))
+      .then(res => res.json())
+      .catch(err => console.error('Error: ', err))
+
+    } else if (feedType === 'profile') {
+
+      const userProfile = window.location.pathname.split('/')[1]
+      
+      return await fetch(API_BASE + '/posts/' + userProfile)
+      .then(res => res.json())
+      .catch(err => console.error('Error: ', err))
+
+    } else if (feedType === 'following') {
+
+      return await fetch(API_BASE + '/posts/follow/' + (loggedIn ? loggedIn.userId : null))
+      .then(res => res.json())
+      .catch(err => console.error('Error: ', err))
+
+    } else {
+      console.log('Error: Invalid Feed Type')
+      return
+    }
   }
 
   async function deletePost(id) {
@@ -118,62 +139,68 @@ const Feed = () => {
     }
   }
 
-  const postPopupHandler = () => {
-    const popup = document.getElementById('post-popup')
-    if (popup.style.visibility === 'hidden') {
+  const postPopupHandler = (postId) => {
+    if(document.getElementById(postId + '-popup')) {
+      const popup = document.getElementById(postId + '-popup')
+      if (popup.style.visibility === 'hidden') {
       popup.style.visibility = 'visible'
-    } else {
-      popup.style.visibility = 'hidden'
+      } else {
+        popup.style.visibility = 'hidden'
+      }
     }
   }
 
   return (
     <div className="feed">
       {posts.map(post => (
-        <div className="feed-container" key={post._id}>
-          <div className="feed-box">
-            <div className="post-top-container">
-              <div className="post-profile">
-                <Link to={'/' + post.userId} className="no-decoration">
-                  <img className="post-profile-pic" alt="profile" src={ post.profilepic }></img>
-                </Link>
-                <Link to={"/" + post.userId} className="no-decoration">
-                  <div className="post-profile-name">{ post.user }</div>
-                </Link>
-              </div>
-              <div className="dot-menu-container">
-                <img className='post-dot-menu' src='vertical-dot-menu.svg' onClick={postPopupHandler} />
-                <div className="post-popup-container" id='post-popup'>
-                  <div className="post-popup-box">
-                    <div className="post-popup-close" onClick={postPopupHandler}></div>
-                    <div className="post-popup-item" onClick={() => deletePost(post._id)}>Delete</div>
-                  </div>
+        <div className="feed-comment-container" key={post._id}>
+          <div className="feed-container">
+            <div className="feed-box">
+              <div className="post-top-container">
+                <div className="post-profile">
+                  <Link to={'/' + post.userId} className="no-decoration">
+                    <img className="post-profile-pic" alt="profile" src={ post.profilepic }></img>
+                  </Link>
+                  <Link to={"/" + post.userId} className="no-decoration">
+                    <div className="post-profile-name">{ post.user }</div>
+                  </Link>
+                </div>
+                <div className="dot-menu-container">
+                  <img className='post-dot-menu' src='vertical-dot-menu.svg' onClick={() => postPopupHandler(post._id)} />
+                  { loggedIn && loggedIn.userId === post.userId &&
+                  <div className="post-popup-container" id={post._id + '-popup'}>
+                    <div className="post-popup-close" onClick={() => postPopupHandler(post._id)}></div>
+                    <div className="post-popup-box">
+                      <div className="post-popup-item" onClick={() => deletePost(post._id)}>Delete</div>
+                    </div>
+                  </div>}
                 </div>
               </div>
-            </div>
-            <Link to={'/post/' + post._id} className="no-decoration">
-              <div className="content-box">
-                { post.content }
+              <Link to={'/post/' + post._id} className="no-decoration">
+                <div className="content-box">
+                  { post.content }
+                </div>
+              </Link>
+              <div className="post-bottom-container">
+                <div className="post-util-bar">
+                    { post.likes > 0
+                    ?
+                    <div className="like-counter">{ post.likes }</div>
+                    :
+                    <div className='like-counter'></div>
+                    }
+                    { liked.get(post._id)
+                    ?
+                    <img className='post-util-item' src='/heart-fill.svg' onClick={() => likedHandler(post._id)} />
+                    :
+                    <img className='post-util-item' src='/heart.svg' onClick={() => likedHandler(post._id)} /> }
+                    <img className='post-util-item' src='/comment.svg' />
+                </div>
+                <div className="posted-time">{ getTime(post.timestamp) }</div>
               </div>
-            </Link>
-            <div className="post-bottom-container">
-              <div className="post-util-bar">
-                  { post.likes > 0
-                  ?
-                  <div className="like-counter">{ post.likes }</div>
-                  :
-                  <div className='like-counter'></div>
-                  }
-                  { liked.get(post._id)
-                  ?
-                  <img className='post-util-item' src='/heart-fill.svg' onClick={() => likedHandler(post._id)} />
-                  :
-                  <img className='post-util-item' src='/heart.svg' onClick={() => likedHandler(post._id)} /> }
-                  <img className='post-util-item' src='/comment.svg' />
-              </div>
-              <div className="posted-time">{ getTime(post.timestamp) }</div>
             </div>
           </div>
+          <Comment />
         </div>
       ))}
     </div>

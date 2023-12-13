@@ -110,7 +110,10 @@ async function authenticateToken(req, res, next) {
   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
     if (err) {
       checkRefreshToken(userId)
-      jwt.sign({ userId: userId }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '10m' })
+      if (process.env.ACCESS_TOKEN_SECRET) 
+      {
+        jwt.sign({ userId: userId }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '10m' })
+      }
       next()
     } else {
     next()
