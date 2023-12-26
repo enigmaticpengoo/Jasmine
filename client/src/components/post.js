@@ -1,17 +1,16 @@
 import { useEffect, useState } from "react";
 import { Link, useOutletContext } from "react-router-dom";
 import Comment from "./comment";
-import getTime from '../modules/getTime'
 
 const API_BASE = 'http://127.0.0.1:3001'
 
-const Feed = ({ feedType }) => {
+const Post = ({ feedType }) => {
   const [[ loggedIn, setLoggedIn ] , [ loginPopup, setLoginPopup ]] = useOutletContext()
   
   const [ posts, setPosts ] = useState([])
   const [ liked, setLiked ] = useState(new Map())
   const [ commented, setCommented ] = useState(new Map())
-  const [ openComments, setOpenComments ] = useState(new Map())
+  const [ openComments, setOpenComments ] = useState(false)
 
   useEffect(() => {
     GetPosts().then(res => {
@@ -85,7 +84,7 @@ const Feed = ({ feedType }) => {
       let accessToken = accessTokenSlice.split(';')[0].split('=')[1]
   
       if (!liked.get(postId)) {
-        fetch(API_BASE + '/like/post', {
+        fetch(API_BASE + '/like', {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -102,7 +101,7 @@ const Feed = ({ feedType }) => {
 
         setPosts([...posts], likeUpdate)
       } else {
-        fetch(API_BASE + '/like/post', {
+        fetch(API_BASE + '/like', {
           method: "DELETE",
               headers: {
                 "Content-Type": "application/json",
@@ -123,6 +122,31 @@ const Feed = ({ feedType }) => {
     setLiked(new Map(liked.set( postId, !liked.get(postId) )))
   }
 
+  const getTime = (postedTime) => {
+    const timeElapsed = (Date.now() - postedTime) / 1000
+    
+    const time = [
+      { name: 'years', number: 365*24*60*60 },
+      { name: 'months', number: 30*24*60*60 },
+      { name: 'weeks', number: 7*24*60*60 },
+      { name: 'days', number: 24*60*60 },
+      { name: 'hours', number: 60*60 },
+      { name: 'minutes', number: 60 },
+      { name: 'seconds', number: 1 }
+    ]
+
+    for (let t of time) {
+      if (timeElapsed >= t.number) {
+        const convertedTime = Math.floor(timeElapsed / t.number)
+        if (convertedTime > 1) {
+          return convertedTime + ' ' + t.name + ' ago'
+        } else {
+          return convertedTime + ' ' + t.name.slice(0, -1) + ' ago'
+        }
+      }
+    }
+  }
+
   const postPopupHandler = (postId) => {
     if(document.getElementById(postId + '-popup')) {
       const popup = document.getElementById(postId + '-popup')
@@ -134,8 +158,8 @@ const Feed = ({ feedType }) => {
     }
   }
 
-  const openCommentsHandler = (postId) => {
-    setOpenComments(new Map(openComments.set( postId, !openComments.get(postId) )))
+  const openCommentsHandler = () => {
+    setOpenComments(!openComments)
   }
 
   return (
@@ -178,22 +202,22 @@ const Feed = ({ feedType }) => {
                     ? <img className='post-util-item' src='/heart-fill.svg' onClick={() => likedHandler(post._id)} />
                     : <img className='post-util-item' src='/heart.svg' onClick={() => likedHandler(post._id)} /> }
                     { post.comments > 0
-                    ? <div className="comment-counter">{ post.comments }</div>
+                    ? <div className="comment-counter">{ post.likes }</div>
                     : <div className="comment-counter"></div> }
-                    { commented.get(post._id)
-                    ? <img className='post-util-item' src='/comment-fill.svg' onClick={() => openCommentsHandler(post._id)} />
-                    : <img className='post-util-item' src='/comment.svg' onClick={() => openCommentsHandler(post._id)} /> }
+                    {
+                    <img className='post-util-item' src='/comment.svg' onClick={openCommentsHandler} />
+                    }
                 </div>
                 <div className="posted-time">{ getTime(post.timestamp) }</div>
               </div>
             </div>
           </div>
-          { openComments.get(post._id) &&
-          <Comment postId={post._id} /> }
+          { openComments &&
+          <Comment /> }
         </div>
       ))}
     </div>
   );
 };
 
-export default Feed;
+export default Post;

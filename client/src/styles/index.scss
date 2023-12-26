@@ -231,6 +231,47 @@ top: 0;
     }
 }
 
+// Comment
+.comment-box {
+    display: flex;
+    align-items: center;
+    position: relative;
+    height: auto;
+    width: 550px;
+    border: 1px solid lightgray;
+    padding: 7px 5px;
+    border-radius: 20px;
+    margin: 10px 0px;
+    max-height: 160px;
+}
+
+.comment-textarea {
+    max-height: 150px;
+    width: 465px;
+    font-size: 18px;
+    resize: none;
+    margin: 5px 10px;
+    border: none;
+    &:focus {
+        outline: none;
+        border: none;
+    }
+}
+
+.comment-button-position {
+    position: absolute;
+    bottom: 50%;
+    transform: translateY(50%);
+    right: 10px;
+}
+
+.comment-button {
+    height: 32px;
+    width: 62px;
+    font-size: 12px;
+    margin: 0px;
+}
+
 // Feed Selector
 .feed-selector-container {
     display: flex;

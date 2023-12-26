@@ -5,12 +5,13 @@ const commentSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    parentCommentId: String,
     content: {
         type: String,
         required: true
     },
     timestamp: {
-        type: Date,
+        type: Number,
         default: Date.now
     },
     userId: {
@@ -24,7 +25,17 @@ const commentSchema = new mongoose.Schema({
     profilepic: {
         type: String,
         required: true
-    }
+    },
+    likes: {
+        type: Number,
+        default: 0
+    },
+    comments: {
+        type: Number,
+        default: 0
+    },
+    liked: Boolean,
+    commented: Boolean
 })
 
 const Comment = mongoose.model('Comment', commentSchema)
