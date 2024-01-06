@@ -11,6 +11,7 @@ const Comment = ({ postId }) => {
   const [ posts, setPosts ] = useState([])
   const [ liked, setLiked ] = useState(new Map())
   const [ commented, setCommented ] = useState(new Map())
+  const [ openComments, setOpenComments ] = useState(new Map())
 
   useEffect(() => {
     GetPosts().then(res => {
@@ -109,6 +110,10 @@ const Comment = ({ postId }) => {
     }
   }
 
+  const openCommentsHandler = (postId) => {
+    setOpenComments(new Map(openComments.set( postId, !openComments.get(postId) )))
+  }
+
   return (
     <div>
       <Commentbox postId={postId} />
@@ -151,8 +156,8 @@ const Comment = ({ postId }) => {
                       ? <img className='post-util-item' src='/heart-fill.svg' onClick={() => likedHandler(post._id)} />
                       : <img className='post-util-item' src='/heart.svg' onClick={() => likedHandler(post._id)} /> }
                       { post.comments > 0
-                      ? <div className="comment-counter">{ post.comments }</div>
-                      : <div className="comment-counter"></div> }
+                      ? <div className="comment-counter" onClick={() => openCommentsHandler(post._id)}>{ post.comments }</div>
+                      : <div className="comment-counter" onClick={() => openCommentsHandler(post._id)}></div> }
                       {
                       <img className='post-util-item' src='/comment.svg' />
                       }
@@ -160,6 +165,8 @@ const Comment = ({ postId }) => {
                   <div className="posted-time">{ getTime(post.timestamp) }</div>
                 </div>
               </div>
+              { openComments.get(post._id) &&
+              <Comment postId={post._id} /> }
             </div>
           </div>
         ))}

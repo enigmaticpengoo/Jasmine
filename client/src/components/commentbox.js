@@ -50,7 +50,7 @@ const Commentbox = ({ postId }) => {
   };
 
   return (
-    <div className="container">
+    <div className="container" style={{ marginTop: -15 }}>
       <div className="comment-box" ref={postBoxRef}>
         <textarea
           id="postContent"
