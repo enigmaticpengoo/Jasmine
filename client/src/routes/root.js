@@ -65,7 +65,7 @@ const Root = () => {
         </div>}
         <div className='logo-searchbar-box'>
           <Link to="/">
-            <img src="http://localhost:3000/jasmine.png" alt="home" className="logo"></img>
+            <img src="http://localhost:3001/jasmine.png" alt="home" className="logo"></img>
           </Link>
           <Searchbar />
         </div>
